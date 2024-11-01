@@ -1,8 +1,7 @@
-// frontend/src/components/User.jsx
-import React, { useState } from 'react';
-import './User.css';
+import  { useState } from 'react';
+import './Login.css';
 
-function User() {
+function Login() {
     const [isRegistering, setIsRegistering] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -72,4 +71,4 @@ function User() {
     );
 }
 
-export default User;
+export default Login;

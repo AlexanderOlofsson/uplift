@@ -1,8 +1,6 @@
-/* User.css */
-
 html, body {
 
-    margin: 0; /* Ta bort standardmarginal för att undvika sidoförskjutningar */
+    margin: 0; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,7 +17,6 @@ html, body {
     text-align: center;
 }
 
-/* Resten av CSS-koden förblir densamma */
 .user-form h2 {
     color: #333;
     margin-bottom: 15px;

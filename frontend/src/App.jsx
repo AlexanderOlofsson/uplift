@@ -1,12 +1,12 @@
 import './App.css'
-import React from 'react';
-import User from './components/User'; // Importera User-komponenten
+import 'react';
+import Login from './components/Login'; // Importera User-komponenten
 
 function App() {
     return (
         <div className="App">
-            <h1>Uplift - Välkommen</h1>
-            <User /> {}
+            <h1>Uplift</h1>
+            <Login /> {}
         </div>
     );
 }
