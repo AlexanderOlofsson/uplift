@@ -15,11 +15,14 @@ html, body {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
+    box-shadow: 1px 8px 16px rgba(57, 20, 223, 0.1);
 }
 
 .user-form h2 {
     color: #333;
     margin-bottom: 15px;
+    
+    
 }
 
 .user-form label {
@@ -29,15 +32,17 @@ html, body {
     text-align: left;
     margin-top: 15px;
     margin-bottom: 10px;
+    
 }
 
 .user-form input {
     width: 90%;
     padding: 15px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
     font-size: 1rem;
+    box-shadow: 1px 4px 8px rgba(57, 20, 223, 0.1);
 }
 
 .user-form button {
@@ -47,7 +52,7 @@ html, body {
     background-color: #489af1;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 14px;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
