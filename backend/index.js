@@ -4,7 +4,7 @@ const express = require('express'),
 const app = express()
 
 app.get('/api', (_request, response) => {
-  response.send({ hello: 'World' })
+  response.send({ Social: 'Say hello to someone on the street.' })
 })
 
 app.use(express.static(path.join(path.resolve(), 'dist')))
