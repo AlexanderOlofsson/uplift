@@ -1,12 +1,10 @@
 import './App.css'
 import 'react';
-import Login from './components/Login'; // Importera User-komponenten
+import Home from './pages/Home';
 
 function App() {
     return (
-        <div className="App">
-            <Login /> {}
-        </div>
+        <Home />
     );
 }
 
