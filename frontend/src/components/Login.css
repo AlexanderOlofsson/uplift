@@ -1,72 +1,76 @@
 html, body {
-
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-
+    height: 100vh;
 }
 
 .user-form-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: 400px;
-  padding: 50px;
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    padding: 50px;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .user-form {
-
-  width: 100%;
-  max-width: 400px;
-  padding: 50px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-  text-align: center;
+    width: 70%;
+    max-width: 500px;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 .user-form h2 {
     color: #333;
-    margin-bottom: 15px;
-
-
+    margin-bottom: 20px;
 }
 
 .user-form label {
     display: block;
     font-weight: bold;
     color: #555;
-    text-align: left;
-    margin-top: 15px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+}
 
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    
+}
+
+.form-row > div {
+    flex: 1;
 }
 
 .user-form input {
-    width: 90%;
-    padding: 15px;
+    width: 100%;
+    padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #cccccc;
-    border-radius: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
     font-size: 1rem;
-    box-shadow: 1px 4px 8px rgba(57, 20, 223, 0.1);
+    box-shadow: 1px 4px 8px rgba(57, 20, 223, 0.05);
 }
 
 .user-form button {
     width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
+    margin-top: 10px;
+    padding: 12px;
     background-color: #489af1;
     color: white;
     border: none;
-    border-radius: 14px;
+    border-radius: 8px;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
