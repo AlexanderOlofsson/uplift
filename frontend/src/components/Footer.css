@@ -8,19 +8,19 @@
     background-color: #f7f7f7;
     color: #333;
     text-align: center;
-    padding: 2rem;
+    padding: 1rem; 
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     font-family: Arial, sans-serif;
-    width: 100%; 
+    width: 100%;
     position: absolute;
-    bottom: 0; /* Placera fotern längst ner på sidan */
-    left: 0;  /* Säkerställer att fotern börjar vid vänsterkanten */
+    bottom: 0; 
+    left: 0;  
 }
+
 
 .footer-container .footer-content {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
 }
 
 .footer-content h2 {
