@@ -6,6 +6,8 @@
 body {
   display: flex;
   justify-content: center;
+  width: 100vw;
+  min-height: 100vh;
   overflow-x: hidden;
   font-style: 'Roboto';
 }
@@ -112,27 +114,42 @@ h2 {
 .marquee {
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  justify-content: center;
+  padding: 20px 0 20px 0;
   font-size: 2em;
   background-color: #3367a1;
   color: #f9f9f9;
-  height: 600px;
-  width: 1200px;
+  height: auto;
+  width: 100%;
+  max-width: 100vw;
+  min-width: 1000px;
+  min-height: 600px;
 
 }
 
 .review {
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin: 0 20px;
+  margin: 20px 100px 20px 0;
   text-align: center;
   background-color: #f9f9f9;
   width: 400px;
   height: 400px;
   padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px 8px rgba(37, 37, 37, 0.171);
+  padding-bottom: 100px;
+}
 
+.reviewDescriptionContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 20px;
 }
 
 .reviewDescription {
@@ -141,15 +158,47 @@ h2 {
   align-items: center;
   align-self: center;
   font-family: 'Roboto';
-  font-size: 1rem;
+  font-size: 1.4rem;
   color: #505050;
   flex-grow: 1;
+  transform: translateY(-20%);
 }
 
+.quoteMark, .quoteMark2 {
+  color: #252525a1;
+  font-size: 5rem;
+  line-height: 1px;
+  width: 100%;
+  position: absolute;
+  margin: 20px;
+}
+
+.quoteMark {
+  top: 40px;
+  left: 0;
+  color: #252525a1;
+  text-align: left;
+}
+
+
+.quoteMark2 {
+  bottom: 130px;
+  right: 0;
+  color: #252525a1;
+  text-align: right;
+}
+
+
 .reviewNameContainer {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
   display: flex;
   align-items: center;
-  margin-top: auto;
+  text-align: left;
+  border-top: 1px solid rgba(37, 37, 37, 0.17);
+  padding-top: 10px;
 }
 
 .profilePicture {
@@ -161,16 +210,35 @@ h2 {
 
 .reviewName {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: left;
+  justify-content: left;
+  text-align: left;
   margin-top: 10px;
 }
 
 .profileJobCountry {
-  font-size: 0.8rem;
-  color: #e1e1e1;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #707070;
 }
 
+.profileInfoContainer {
+  margin-left: 20px;
+}
+
+.countUsers {
+  width: 100%;
+  display: flex;
+  background-color: #3367a1;
+  color: transparent;
+  align-items: center;
+  justify-content: center;
+  transition: color 1s ease-in-out;
+}
+
+.countUsers.fade-in {
+  color: #f9f9f9;
+}
 
 /* Animations  */
 

@@ -1,10 +1,4 @@
-html, body {
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+
 
 .user-form-container {
     display: flex;
@@ -46,7 +40,7 @@ html, body {
     display: flex;
     justify-content: space-between;
     gap: 50px;
-    
+
 }
 
 .form-row > div {

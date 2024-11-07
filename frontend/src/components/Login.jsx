@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
 function Login() {
@@ -9,6 +10,8 @@ function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
+
+    const navigate = useNavigate();
 
     const handleFormToggle = () => {
         setIsRegistering(!isRegistering);
@@ -27,6 +30,7 @@ function Login() {
         } else {
             console.log("Försöker logga in:", { username, password });
         }
+        navigate('/dashboard');
     };
 
     return (
