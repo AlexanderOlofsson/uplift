@@ -5,6 +5,8 @@ import WelcomePage from '../pages/WelcomePage';
 import PhysicalPage from '../pages/PhysicalPage';
 import MentalPage from '../pages/MentalPage';
 import SocialPage from '../pages/SocialPage';
+import Profile from '../pages/Profile';
+import Login from '../components/Login';
 
 
 function AppRoutes() {
@@ -15,6 +17,8 @@ function AppRoutes() {
       <Route path="/physical" element={<PhysicalPage />} />
       <Route path="/mental" element={<MentalPage />} />
       <Route path="/social" element={<SocialPage />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/profile" element={<Profile />} />
     </Routes>
   );
 }

@@ -30,7 +30,7 @@ function Login() {
         } else {
             console.log("Försöker logga in:", { username, password });
         }
-        navigate('/dashboard');
+        navigate('/Profile');
     };
 
     return (
