@@ -13,6 +13,7 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null); // To hold error messages
 
   const navigate = useNavigate(); // For redirecting after login/register
@@ -52,7 +53,7 @@ function Login() {
               // If login fails, show an error
               setError(data.message || 'Login failed');
           } else {
-              alert('Login successful!');
+            console.log('Login successful!');
               navigate('/dashboard'); // Off we go to the dashboard boys
           }
       } catch (error) {
@@ -62,36 +63,36 @@ function Login() {
   };
 
   const handleRegister = async () => {
-      try {
-          const response = await fetch('http://localhost:3000/auth/register', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                  firstName,
-                  lastName,
-                  birthDate,
-                  username,
-                  email,
-                  password,
-              }),
-          });
+    try {
+        const response = await fetch('http://localhost:3000/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                firstName,
+                lastName,
+                birthDate,
+                username,
+                email,
+                password,
+            }),
+        });
 
-          const data = await response.json();
+        const data = await response.json();
 
-          if (!response.ok) {
-              // If registration failed, show an error
-              setError(data.message || 'Account creation failed.');
-          } else {
-              alert('Account created.');
-              handleFormToggle(); // Switch to login mode
-          }
-      } catch (error) {
-          console.error('Error:', error);
-          setError('Something went wrong boys.');
-      }
-  };
+        if (!response.ok) {
+            setError(data.message || 'Account creation failed.');
+        } else {
+            console.log('Account created.');
+            handleFormToggle();
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        setError('Something went wrong.');
+    }
+};
+
 
 
     return (
