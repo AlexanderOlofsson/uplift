@@ -87,7 +87,6 @@ function Login() {
             console.log('Account created.');
             handleFormToggle();
         }
-<<<<<<< HEAD
     } catch (error) {
         console.error('Error:', error);
         setError('Something went wrong.');
@@ -95,10 +94,6 @@ function Login() {
 };
 
 
-=======
-        navigate('/Profile');
-    };
->>>>>>> 1e8a067be6509f25fb95a19b217e0516cb1bfb74
 
     return (
         <div className="user-form-container">
