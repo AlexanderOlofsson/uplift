@@ -1,26 +1,66 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './Profile.css';
 
 function Profile() {
     const [user, setUser] = useState({
-        firstName: 'Test',
-        lastName: 'Testson',
-        birthDate: '1990-01-01',
-        username: 'testuser',
-        email: 'test.testson@example.com'
+        firstName: '',
+        lastName: '',
+        birthDate: '',
+        username: '',
+        email: ''
     });
-
     const [isEditing, setIsEditing] = useState(false);
-    const [newFirstName, setNewFirstName] = useState(user.firstName);
-    const [newLastName, setNewLastName] = useState(user.lastName);
-    const [newBirthDate, setNewBirthDate] = useState(user.birthDate);
-    const [newUsername, setNewUsername] = useState(user.username);
-    const [newEmail, setNewEmail] = useState(user.email);
+    const [newFirstName, setNewFirstName] = useState('');
+    const [newLastName, setNewLastName] = useState('');
+    const [newBirthDate, setNewBirthDate] = useState('');
+    const [newUsername, setNewUsername] = useState('');
+    const [newEmail, setNewEmail] = useState('');
     const [newPassword, setNewPassword] = useState('');
+
+    // Fetch user data when all loaded, get and check token
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const token = localStorage.getItem('token'); // Get token from localStorage
+            if (!token) return; // IF NO TOKEN STOP HERE
+            try {
+                const response = await fetch('http://localhost:3000/users/profile', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log(data);
+                    setUser({
+                        firstName: data.first_name,
+                        lastName: data.last_name,
+                        birthDate: data.birth_date.split('T')[0], // Remove time format
+                        username: data.username,
+                        email: data.email
+                    });
+                    // Set the new values for editing
+                    setNewFirstName(data.first_name);
+                    setNewLastName(data.last_name);
+                    setNewBirthDate(data.birth_date.split('T')[0]); // Remove time format
+                    setNewUsername(data.username);
+                    setNewEmail(data.email);
+                } else {
+                    console.error('Failed to fetch');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     const handleEditToggle = () => {
         setIsEditing(!isEditing);
-        if (isEditing) {
+        if (!isEditing) {
+            // Set edit fields with current user data
             setNewFirstName(user.firstName);
             setNewLastName(user.lastName);
             setNewBirthDate(user.birthDate);
@@ -30,26 +70,68 @@ function Profile() {
         }
     };
 
-    const handleUpdate = () => {
-        setUser({
-            firstName: newFirstName,
-            lastName: newLastName,
-            birthDate: newBirthDate,
-            username: newUsername,
-            email: newEmail,
-        });
-        setIsEditing(false);
-    };
+    const handleUpdate = async () => {
+      const token = localStorage.getItem('token');
+      try {
+          const response = await fetch('http://localhost:3000/users/profile', {
+              method: 'PUT',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                  firstName: newFirstName,
+                  lastName: newLastName,
+                  birthDate: newBirthDate,
+                  username: newUsername,
+                  email: newEmail,
+                  password: newPassword
+              }),
+          });
 
-    const handleDelete = () => {
-        alert('Account deleted');
-        setUser({
-            firstName: '',
-            lastName: '',
-            birthDate: '',
-            username: '',
-            email: ''
-        });
+          if (response.ok) {
+              const data = await response.json();
+              console.log(data);
+
+              const updatedUser = data.user || data;
+              setUser({
+                  firstName: updatedUser.first_name,
+                  lastName: updatedUser.last_name,
+                  birthDate: data.birth_date,
+                  username: updatedUser.username,
+                  email: updatedUser.email
+              });
+              setIsEditing(false); // Toggle/navigate back to profile info
+              alert('Profile updated successfully');
+          } else {
+              console.error('Failed to update user data');
+          }
+      } catch (error) {
+          console.error('Error:', error);
+      }
+  };
+
+
+
+    const handleDelete = async () => {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch('http://localhost:3000/users/profile', {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                alert('Account deleted');
+                // we wanna navigate back
+            } else {
+                console.error('Failed to delete account');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
     return (
