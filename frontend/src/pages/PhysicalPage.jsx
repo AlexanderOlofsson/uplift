@@ -37,7 +37,7 @@ const TextAppear = {
     >
       <header>
         <motion.div variants={logoEffect}>
-          <FontAwesomeIcon icon={faArrowLeft} className="back-arrow" onClick={() => navigate('/welcome')} />
+          <FontAwesomeIcon icon={faArrowLeft} className="back-arrow" onClick={() => navigate('/dashboard')} />
         </motion.div>
         <motion.h1 className="logo" variants={logoEffect}>
           Uplift
