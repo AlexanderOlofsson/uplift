@@ -13,8 +13,8 @@
 }
 
 .user-form {
-    width: 70%;
-    max-width: 500px;
+    width: 90%;
+    max-width: 450px;
     padding: 40px;
     background-color: #ffffff;
     border-radius: 8px;
@@ -32,13 +32,13 @@
     font-weight: bold;
     color: #555;
     margin-bottom: 8px;
+    text-align: left;
 }
 
 .form-row {
     display: flex;
     justify-content: space-between;
-    gap: 50px;
-
+    gap: 20px;
 }
 
 .form-row > div {

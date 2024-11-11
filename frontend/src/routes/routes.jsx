@@ -13,7 +13,6 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/Login" element={<Login/>} />
       <Route path="/dashboard" element={<WelcomePage />} />
       <Route path="/physical" element={<PhysicalPage />} />
       <Route path="/mental" element={<MentalPage />} />
