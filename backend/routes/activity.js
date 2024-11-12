@@ -1,25 +1,26 @@
+// routes/activity.js
 const express = require('express');
 const router = express.Router();
-const db = require('../db'); 
+const db = require('../db');
 
-
-router.get('/random-activities', async (req, res) => {
+// Route för att hämta tasks baserat på kategori
+router.get('/category/:category', async (req, res) => {
+  const { category } = req.params;
+  
   try {
-    const categories = ['Physical', 'Mental', 'Social'];
-    const tasks = {};
+    const result = await db.query(
+      'SELECT * FROM Activities WHERE category = $1 ORDER BY RANDOM() LIMIT 1',
+      [category]
+    );
 
-    for (let category of categories) {
-      const result = await db.query(
-        'SELECT * FROM Activities WHERE category = $1 ORDER BY RANDOM() LIMIT 3',
-        [category]
-      );
-      tasks[category] = result.rows;
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'No task found for this category' });
     }
 
-    res.json(tasks);
+    res.json(result.rows[0]);
   } catch (error) {
-    console.error('Error fetching random activities:', error);
-    res.status(500).json({ error: 'Failed to fetch activities' });
+    console.error('Error fetching task:', error);
+    res.status(500).json({ error: 'Failed to fetch task' });
   }
 });
 

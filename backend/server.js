@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const pool = require('./db'); 
+const db = require('./db'); 
 const activity = require('./routes/activity'); 
 
 dotenv.config();
@@ -23,7 +23,7 @@ app.get('/api/random-tasks', async (req, res) => {
     const tasks = {};
 
     for (const category of categories) {
-      const result = await pool.query(
+      const result = await db.query(
         `SELECT * FROM Activities WHERE category = $1 ORDER BY RANDOM() LIMIT 1`,
         [category]
       );
@@ -43,6 +43,6 @@ app.get('/', (req, res) => {
 });
 
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(3000, () => {
+    console.log('Server running at http://localhost:3000/');
+  });

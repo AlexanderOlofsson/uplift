@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const path = require('path');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const activityRoutes = require('./routes/activity');
 
 dotenv.config();
 
@@ -13,7 +14,7 @@ app.use(express.json());
 
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
-
+app.use('/api/activities', activityRoutes)
 app.use(express.static(path.join(path.resolve(), 'dist')));
 
 app.listen(3000, () => {
