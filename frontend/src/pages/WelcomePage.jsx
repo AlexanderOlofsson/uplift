@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import image1 from '../assets/images/image1.jpg';
 import image2 from '../assets/images/image2.jpg';
@@ -7,6 +7,26 @@ import './WelcomePage.css';
 
 function WelcomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [tasks, setTasks] = useState({ Physical: null, Mental: null, Social: null });
+
+  // Funktion för att hämta aktiviteter från backend
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/random-tasks');
+        if (response.ok) {
+          const data = await response.json();
+          setTasks(data); // Spara aktiviteter i state
+        } else {
+          console.error('Error fetching activities:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching activities:', error);
+      }
+    };
+
+    fetchActivities();
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -74,21 +94,37 @@ function WelcomePage() {
               Here are your daily tasks designed to uplift your physical health, strengthen your social bonds, and fuel your personal growth. Every day is an opportunity to become a better you.
             </p>
           </motion.div>
+
+          {/* Visar de slumpmässigt valda aktiviteterna */}
+          <div className="tasks-section">
+            <h3> Tasks of the day</h3>
+            {Object.keys(tasks).map((category) => (
+              <div key={category} className="task-category">
+                <h4>{category}</h4>
+                {tasks[category] ? (
+                  <p>{tasks[category].description}</p>
+                ) : (
+                  <p>Loading...</p>
+                )}
+              </div>
+            ))}
+          </div>
+
           <div className="image-gallery">
             <motion.div
               className="image-wrapper"
               variants={imageHoverEffect}
               whileHover="hover"
             >
-             < a href="physical" className="image-link">
-              <img
-                src={image3}
-                alt="Physical"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-              <motion.p className="image-caption" variants={textHoverEffect}>
-                Physical
-              </motion.p>
+              <a href="physical" className="image-link">
+                <img
+                  src={image3}
+                  alt="Physical"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+                <motion.p className="image-caption" variants={textHoverEffect}>
+                  Physical
+                </motion.p>
               </a>
             </motion.div>
 
@@ -97,15 +133,15 @@ function WelcomePage() {
               variants={imageHoverEffect}
               whileHover="hover"
             >
-                < a href="/social" className="image-link">
-              <img
-                src={image2}
-                alt="Social"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-              <motion.p className="image-caption" variants={textHoverEffect}>
-                Social
-              </motion.p>
+              <a href="/social" className="image-link">
+                <img
+                  src={image2}
+                  alt="Social"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+                <motion.p className="image-caption" variants={textHoverEffect}>
+                  Social
+                </motion.p>
               </a>
             </motion.div>
 
@@ -114,15 +150,15 @@ function WelcomePage() {
               variants={imageHoverEffect}
               whileHover="hover"
             >
-                <a href="/mental" className="image-link">
-              <img
-                src={image1}
-                alt="Mental"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-              <motion.p className="image-caption" variants={textHoverEffect}>
-                Mental
-              </motion.p>
+              <a href="/mental" className="image-link">
+                <img
+                  src={image1}
+                  alt="Mental"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+                <motion.p className="image-caption" variants={textHoverEffect}>
+                  Mental
+                </motion.p>
               </a>
             </motion.div>
           </div>
