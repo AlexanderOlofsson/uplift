@@ -18,7 +18,7 @@ function AppRoutes() {
       <Route path="/mental" element={<MentalPage />} />
       <Route path="/social" element={<SocialPage />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="/dashboard/profile" element={<Profile />} />
     </Routes>
   );
 }

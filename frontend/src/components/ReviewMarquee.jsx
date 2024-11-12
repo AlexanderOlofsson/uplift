@@ -1,4 +1,5 @@
 import '../styles/Home.css';
+import PropTypes from 'prop-types';
 
 // https://www.react-fast-marquee.com/documentation
 import ReviewSlider from "react-fast-marquee"
@@ -159,6 +160,10 @@ return (
 </section>
 
 )
+}
+
+ReviewMarquee.propTypes = {
+  direction: PropTypes.string
 }
 
 export default ReviewMarquee;

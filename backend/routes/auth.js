@@ -1,7 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const dbFountain = require('../db');
+// https://www.npmjs.com/package/bcrypt
 const bcrypt = require('bcrypt');
+// https://www.npmjs.com/package/jsonwebtoken
+const jwt = require('jsonwebtoken');
+
+const JWT_KEY = process.env.JWT_KEY;
 
 // Login route
 router.post('/login', async (req, res) => {
@@ -21,7 +26,10 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'Wrong password.' });
         }
 
-        res.json({ message: 'Login did work.', userId: user.uid });
+        // Create a JWT token
+        const token = jwt.sign({ userId: user.uid }, JWT_KEY, { expiresIn: '1h' });
+
+        res.json({ message: 'Login successful.', token }); // Send the token back to client
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Something went wrong.' });
@@ -36,17 +44,17 @@ router.post('/register', async (req, res) => {
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Insert the new user into the database
+        // Add the new user into the db
         const result = await dbFountain.query(
             'INSERT INTO users (first_name, last_name, birth_date, username, email, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
             [firstName, lastName, birthDate, username, email, hashedPassword]
         );
 
-        // Respond with the created user data
+        // Status created user data
         res.status(201).json({ message: 'Account created.', user: result.rows[0] });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Failed to create account. Blame the server.' });
+        res.status(500).json({ message: 'Failed to create account. Dont hate the game, hate the server.' });
     }
 });
 

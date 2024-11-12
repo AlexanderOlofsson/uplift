@@ -71,7 +71,7 @@ function WelcomePage() {
             <motion.a href="#" className="nav-link" variants={linkEffect}>
               Your Progress
             </motion.a>
-            <motion.a href="#" className="nav-link" variants={linkEffect}>
+            <motion.a href="/dashboard/profile" className="nav-link" variants={linkEffect}>
               Profile
             </motion.a>
             <motion.a href="#" className="nav-link" variants={linkEffect}>

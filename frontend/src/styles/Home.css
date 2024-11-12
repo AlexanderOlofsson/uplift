@@ -234,6 +234,7 @@ h2 {
   align-items: center;
   justify-content: center;
   transition: color 1s ease-in-out;
+  margin: 0;
 }
 
 .countUsers.fade-in {

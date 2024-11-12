@@ -54,7 +54,9 @@ function Login() {
               setError(data.message || 'Login failed');
           } else {
             console.log('Login successful!');
+              localStorage.setItem('token', data.token); // Save JWT-token before we go on dashboard trip
               navigate('/dashboard'); // Off we go to the dashboard boys
+              console.log('JWT Token did finally save :)', data.token)
           }
       } catch (error) {
           console.error('Error:', error);
