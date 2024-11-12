@@ -9,24 +9,31 @@ function WelcomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [tasks, setTasks] = useState({ Physical: null, Mental: null, Social: null });
 
-  // Funktion för att hämta aktiviteter från backend
+  // Get daily tasks/activites for specific user, using jwt token
+  const token = localStorage.getItem('token');
+
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/random-tasks');
+        const response = await fetch(`http://localhost:3000/api/activities/daily-activities`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         if (response.ok) {
           const data = await response.json();
-          setTasks(data); // Spara aktiviteter i state
+          setTasks(data);
         } else {
-          console.error('Error fetching activities:', response.statusText);
+          console.error('Error fetching daily activities:', response.statusText);
         }
       } catch (error) {
-        console.error('Error fetching activities:', error);
+        console.error('Error fetching daily activities:', error);
       }
     };
 
     fetchActivities();
-  }, []);
+  }, [token]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -95,7 +102,7 @@ function WelcomePage() {
             </p>
           </motion.div>
 
-          {/* Visar de slumpmässigt valda aktiviteterna */}
+          {/* Show assigned activites */}
           <div className="tasks-section">
             <h3> Tasks of the day</h3>
             {Object.keys(tasks).map((category) => (

@@ -102,7 +102,6 @@ function Profile() {
                   email: updatedUser.email
               });
               setIsEditing(false); // Toggle/navigate back to profile info
-              alert('Profile updated successfully');
           } else {
               console.error('Failed to update user data');
           }
@@ -113,26 +112,28 @@ function Profile() {
 
 
 
-    const handleDelete = async () => {
-        const token = localStorage.getItem('token');
-        try {
-            const response = await fetch('http://localhost:3000/users/profile', {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
+  const handleDelete = async () => {
+    const token = localStorage.getItem('token');
+    try {
+        const response = await fetch('http://localhost:3000/users/profile', {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
 
-            if (response.ok) {
-                alert('Account deleted');
-                // we wanna navigate back
-            } else {
-                console.error('Failed to delete account');
-            }
-        } catch (error) {
-            console.error('Error:', error);
+        if (response.ok) {
+            console.log('Account deleted, killed and destroyed')
+            localStorage.removeItem('token'); // remove token
+            window.location.href = '/login';
+        } else {
+            console.error('Failed to delete account');
         }
-    };
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
+
 
     return (
         <div className="profile-container">

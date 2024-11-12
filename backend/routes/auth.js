@@ -5,6 +5,7 @@ const dbFountain = require('../db');
 const bcrypt = require('bcrypt');
 // https://www.npmjs.com/package/jsonwebtoken
 const jwt = require('jsonwebtoken');
+const { assignDailyActivitiesForUser } = require('../scheduler');
 
 const JWT_KEY = process.env.JWT_KEY;
 
@@ -24,6 +25,18 @@ router.post('/login', async (req, res) => {
 
         if (!isMatch) {
             return res.status(400).json({ message: 'Wrong password.' });
+        }
+
+        // Check if the user already has activities for today
+        const today = new Date().toISOString().split('T')[0]; // Format today's date as YYYY-MM-DD
+        const activitiesResult = await dbFountain.query(
+            `SELECT * FROM DailyActivities WHERE user_id = $1 AND date = $2`,
+            [user.uid, today]
+        );
+
+        if (activitiesResult.rows.length === 0) {
+            // Assign activities if it's the user's first login of the day
+            await assignDailyActivitiesForUser(user.uid);
         }
 
         // Create a JWT token

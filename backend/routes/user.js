@@ -79,18 +79,19 @@ router.put('/profile', authenticateToken, async (req, res) => {
 
 // DELETE - Sadly, Delete the user
 router.delete('/profile', authenticateToken, async (req, res) => {
-    try {
-        const result = await dbFountain.query('DELETE FROM users WHERE uid = $1 RETURNING *', [req.user.userId]);
+  try {
+      const result = await dbFountain.query('DELETE FROM users WHERE uid = $1 RETURNING *', [req.user.userId]);
 
-        if (result.rows.length === 0) {
-            return res.status(404).json({ message: 'User is MIA (DELETE).' });
-        }
+      if (result.rows.length === 0) {
+          return res.status(404).json({ message: 'User is MIA (DELETE).' });
+      }
 
-        res.json({ message: 'Account was deleted.' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Failed deleting account, maybe the person wants to stay?' });
-    }
+      res.json({ message: 'Account was deleted.' }); // Confirm deletion
+  } catch (error) {
+      console.error('Error during account deletion:', error); // Log full error
+      res.status(500).json({ message: 'Failed deleting account, maybe the person wants to stay?' });
+  }
 });
+
 
 module.exports = router;
