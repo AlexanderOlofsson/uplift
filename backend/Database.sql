@@ -1,23 +1,69 @@
--- Databas användare:
+-- pgAdmin
 
-CREATE TABLE Users (
-    id SERIAL PRIMARY KEY,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
-    birth_date DATE,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(50) NOT NULL
-);
+-- Table users:
 
--- Databas Aactivities
+CREATE TABLE IF NOT EXISTS public.users
+(
+    uid bigint NOT NULL DEFAULT nextval('users_uid_seq'::regclass),
+    username character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    password character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    created timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    address character varying(100) COLLATE pg_catalog."default",
+    phone character varying(15) COLLATE pg_catalog."default",
+    birth_date date,
+    first_name character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    last_name character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT users_pkey PRIMARY KEY (uid)
+)
 
-CREATE TABLE Activities (
-    id SERIAL PRIMARY KEY,
-    category VARCHAR(50) NOT NULL,
-    activity_number INTEGER NOT NULL,
-    description TEXT NOT NULL
-);
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.users
+    OWNER to postgres;
+
+-- able activities
+
+CREATE TABLE IF NOT EXISTS public.activities
+(
+    id integer NOT NULL DEFAULT nextval('activities_id_seq'::regclass),
+    category character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    activity_number integer NOT NULL,
+    description text COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT activities_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.activities
+    OWNER to postgres;
+
+-- able dailyactivites
+
+CREATE TABLE IF NOT EXISTS public.dailyactivities
+(
+    id integer NOT NULL DEFAULT nextval('dailyactivities_id_seq'::regclass),
+    user_id integer,
+    activity_id integer,
+    date date DEFAULT CURRENT_DATE,
+    category character varying(50) COLLATE pg_catalog."default",
+    CONSTRAINT dailyactivities_pkey PRIMARY KEY (id),
+    CONSTRAINT unique_user_date_category UNIQUE (user_id, date, category),
+    CONSTRAINT dailyactivities_activity_id_fkey FOREIGN KEY (activity_id)
+        REFERENCES public.activities (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT dailyactivities_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES public.users (uid) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.dailyactivities
+    OWNER to postgres;
 
 
 
