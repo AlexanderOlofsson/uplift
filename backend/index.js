@@ -5,7 +5,9 @@ const path = require('path');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const activityRoutes = require('./routes/activity');
+const mentorsRoutes = require('./routes/mentor');
 require('./scheduler');
+
 
 dotenv.config();
 
@@ -19,6 +21,8 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/api/activities', activityRoutes);
+app.use('/mentor', mentorsRoutes);
+
 
 
 app.use(express.static(path.join(path.resolve(), 'dist')));
