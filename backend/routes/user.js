@@ -88,7 +88,7 @@ router.delete('/profile', authenticateToken, async (req, res) => {
 
       res.json({ message: 'Account was deleted.' }); // Confirm deletion
   } catch (error) {
-      console.error('Error during account deletion:', error); // Log full error
+      console.error('Error during account deletion:', error); // Log everything
       res.status(500).json({ message: 'Failed deleting account, maybe the person wants to stay?' });
   }
 });

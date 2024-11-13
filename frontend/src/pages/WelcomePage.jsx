@@ -1,42 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import image1 from '../assets/images/image1.jpg';
 import image2 from '../assets/images/image2.jpg';
 import image3 from '../assets/images/image3.jpg';
 import './WelcomePage.css';
+import TodaysTasks from '../components/TodaysTasks';
 
 function WelcomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [tasks, setTasks] = useState({ Physical: null, Mental: null, Social: null });
-
-  // Get daily tasks/activites for specific user, using jwt token
-  const token = localStorage.getItem('token');
-
-  useEffect(() => {
-    const fetchActivities = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/api/activities/daily-activities`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setTasks(data);
-        } else {
-          console.error('Error fetching daily activities:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error fetching daily activities:', error);
-      }
-    };
-
-    fetchActivities();
-  }, [token]);
+  const navigate=useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
   };
 
   const textAppear = {
@@ -81,7 +62,7 @@ function WelcomePage() {
             <motion.a href="/dashboard/profile" className="nav-link" variants={linkEffect}>
               Profile
             </motion.a>
-            <motion.a href="#" className="nav-link" variants={linkEffect}>
+            <motion.a href="#" className="nav-link" onClick={handleLogout} variants={linkEffect}>
               Log Out
             </motion.a>
           </div>
@@ -97,25 +78,13 @@ function WelcomePage() {
             animate="visible"
           >
             <p>
-              <strong>Welcome!</strong><br />
+              <strong>Welcome!</strong>
+              <br />
               Here are your daily tasks designed to uplift your physical health, strengthen your social bonds, and fuel your personal growth. Every day is an opportunity to become a better you.
             </p>
           </motion.div>
 
-          {/* Show assigned activites */}
-          <div className="tasks-section">
-            <h3> Tasks of the day</h3>
-            {Object.keys(tasks).map((category) => (
-              <div key={category} className="task-category">
-                <h4>{category}</h4>
-                {tasks[category] ? (
-                  <p>{tasks[category].description}</p>
-                ) : (
-                  <p>Loading...</p>
-                )}
-              </div>
-            ))}
-          </div>
+          <TodaysTasks />
 
           <div className="image-gallery">
             <motion.div

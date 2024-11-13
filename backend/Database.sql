@@ -23,7 +23,7 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.users
     OWNER to postgres;
 
--- able activities
+-- Table activities
 
 CREATE TABLE IF NOT EXISTS public.activities
 (
@@ -39,7 +39,7 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.activities
     OWNER to postgres;
 
--- able dailyactivites
+-- Table dailyactivites
 
 CREATE TABLE IF NOT EXISTS public.dailyactivities
 (
@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS public.dailyactivities
     activity_id integer,
     date date DEFAULT CURRENT_DATE,
     category character varying(50) COLLATE pg_catalog."default",
+    completed boolean DEFAULT false,
     CONSTRAINT dailyactivities_pkey PRIMARY KEY (id),
     CONSTRAINT unique_user_date_category UNIQUE (user_id, date, category),
     CONSTRAINT dailyactivities_activity_id_fkey FOREIGN KEY (activity_id)
@@ -65,6 +66,30 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.dailyactivities
     OWNER to postgres;
 
+
+-- Table statistics
+
+CREATE TABLE IF NOT EXISTS public.statistics
+(
+    id integer NOT NULL DEFAULT nextval('statistics_id_seq'::regclass),
+    user_id integer,
+    total_tasks_completed integer DEFAULT 0,
+    mental_tasks_completed integer DEFAULT 0,
+    physical_tasks_completed integer DEFAULT 0,
+    social_tasks_completed integer DEFAULT 0,
+    streak_days integer DEFAULT 0,
+    updated_at timestamp without time zone DEFAULT now(),
+    CONSTRAINT statistics_pkey PRIMARY KEY (id),
+    CONSTRAINT statistics_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES public.users (uid) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.statistics
+    OWNER to postgres;
 
 
 IINSERT INTO Activities (category, activity_number, description) VALUES

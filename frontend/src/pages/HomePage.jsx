@@ -46,7 +46,11 @@ function Home() {
             </div>
             <div className="firstSectionText">
                 <h2>Get motivated to take small steps toward a stronger everyday life!</h2>
-                <button className="signupBtn" >Get started</button>
+                <button
+                  className="signupBtn"
+                  onClick={() => navigate('/login', { state: { showRegister: true } })}>
+                  Get started
+                </button>
                 <button className="loginBtn" onClick={() => navigate('/login')}>I already have an account</button>
             </div>
         </section>

@@ -1,10 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import './Login.css';
 
-function Login() {
+function Login({ defaultRegisterState = false }) {
   // Toggle between login and register
-  const [isRegistering, setIsRegistering] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(defaultRegisterState);
+
+  useEffect(() => {
+    setIsRegistering(defaultRegisterState);
+  }, [defaultRegisterState]);
 
   // Form fields
   const [firstName, setFirstName] = useState('');
@@ -19,188 +24,189 @@ function Login() {
   const navigate = useNavigate(); // For redirecting after login/register
 
   const handleFormToggle = () => {
-      setIsRegistering(!isRegistering); // Switch form mode
-      setFirstName(''); // Clear form fields
-      setLastName('');
-      setBirthDate('');
-      setUsername('');
-      setPassword('');
-      setEmail('');
-      setError(null);
+    setIsRegistering(!isRegistering); // Switch form mode
+    setFirstName(''); // Clear form fields
+    setLastName('');
+    setBirthDate('');
+    setUsername('');
+    setPassword('');
+    setEmail('');
+    setError(null);
   };
 
   const handleSubmit = async (e) => {
-      e.preventDefault(); // No page refresh, please
-      setError(null); // Clear any old errors
+    e.preventDefault(); // No page refresh, please
+    setError(null); // Clear any old errors
 
-      // Choose between login or register based on form mode
-      isRegistering ? await handleRegister() : await handleLogin();
+    // Choose between login or register based on form mode
+    isRegistering ? await handleRegister() : await handleLogin();
   };
 
   const handleLogin = async () => {
-      try {
-          const response = await fetch('http://localhost:3000/auth/login', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ username, password }),
-          });
+    try {
+      const response = await fetch('http://localhost:3000/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
-          const data = await response.json();
+      const data = await response.json();
 
-          if (!response.ok) {
-              // If login fails, show an error
-              setError(data.message || 'Login failed');
-          } else {
-            console.log('Login successful!');
-              localStorage.setItem('token', data.token); // Save JWT-token before we go on dashboard trip
-              navigate('/dashboard'); // Off we go to the dashboard boys
-              console.log('JWT Token did finally save :)', data.token)
-          }
-      } catch (error) {
-          console.error('Error:', error);
-          setError('Server issue, try again later');
+      if (!response.ok) {
+        // If login fails, show an error
+        setError(data.message || 'Login failed');
+      } else {
+        console.log('Login successful!');
+        localStorage.setItem('token', data.token); // Save JWT-token before we go on dashboard trip
+        navigate('/dashboard'); // Off we go to the dashboard boys
+        console.log('JWT Token still works, niceee:', data.token);
       }
+    } catch (error) {
+      console.error('Error:', error);
+      setError('Server issue, try again later');
+    }
   };
 
   const handleRegister = async () => {
     try {
-        const response = await fetch('http://localhost:3000/auth/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                firstName,
-                lastName,
-                birthDate,
-                username,
-                email,
-                password,
-            }),
-        });
+      const response = await fetch('http://localhost:3000/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          birthDate,
+          username,
+          email,
+          password,
+        }),
+      });
 
-        const data = await response.json();
+      const data = await response.json();
 
-        if (!response.ok) {
-            setError(data.message || 'Account creation failed.');
-        } else {
-            console.log('Account created.');
-            handleFormToggle();
-        }
+      if (!response.ok) {
+        setError(data.message || 'Account creation failed.');
+      } else {
+        console.log('Account created.');
+        handleFormToggle();
+      }
     } catch (error) {
-        console.error('Error:', error);
-        setError('Something went wrong.');
+      console.error('Error:', error);
+      setError('Something went wrong.');
     }
-};
+  };
 
+  return (
+    <div className="user-form-container">
+      <div className="user-form">
+        <h2>{isRegistering ? 'Register' : 'Login'}</h2>
+        <form onSubmit={handleSubmit}>
+          {isRegistering ? (
+            <>
+              <div className="form-row">
+                <div>
+                  <label>First name:</label>
+                  <input
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required
+                  />
+                </div>
 
+                <div>
+                  <label>Last name:</label>
+                  <input
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
 
-    return (
-        <div className="user-form-container">
-            <div className="user-form">
-                <h2>{isRegistering ? 'Register' : 'Login'}</h2>
-                <form onSubmit={handleSubmit}>
-                    {isRegistering ? (
-                        <>
-                            <div className="form-row">
-                                <div>
-                                    <label>First name:</label>
-                                    <input
-                                        type="text"
-                                        value={firstName}
-                                        onChange={(e) => setFirstName(e.target.value)}
-                                        required
-                                    />
-                                </div>
+              <div className="form-row">
+                <div>
+                  <label>Birth (yyyy-mm-dd):</label>
+                  <input
+                    type="date"
+                    value={birthDate}
+                    onChange={(e) => setBirthDate(e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <label>Username:</label>
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
 
-                                <div>
-                                    <label>Last name:</label>
-                                    <input
-                                        type="text"
-                                        value={lastName}
-                                        onChange={(e) => setLastName(e.target.value)}
-                                        required
-                                    />
-                                </div>
-                            </div>
+              <div>
+                <label>Email:</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
 
-                            <div className="form-row">
-                                <div>
-                                    <label>Birth (yyyy-mm-dd):</label>
-                                    <input
-                                        type="date"
-                                        value={birthDate}
-                                        onChange={(e) => setBirthDate(e.target.value)}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label>Username:</label>
-                                    <input
-                                        type="text"
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
-                                        required
-                                    />
-                                </div>
+              <div>
+                <label>Password:</label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <label>Username:</label>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                />
+              </div>
 
-                            </div>
+              <div>
+                <label>Password:</label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+            </>
+          )}
 
-                            <div>
-                                <label>Email:</label>
-                                <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                />
-                            </div>
+          <button type="submit">{isRegistering ? 'Register' : 'Login'}</button>
+        </form>
 
-                            <div>
-                                <label>Password:</label>
-                                <input
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                />
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <div>
-                                <label>Username:</label>
-                                <input
-                                    type="text"
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    required
-                                />
-                            </div>
-
-                            <div>
-                                <label>Password:</label>
-                                <input
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                />
-                            </div>
-                        </>
-                    )}
-
-                    <button type="submit">{isRegistering ? 'Register' : 'Login'}</button>
-                </form>
-
-                <button onClick={handleFormToggle}>
-                    {isRegistering ? 'Already registerd' : 'Register'}
-                </button>
-            </div>
-        </div>
-    );
+        <button onClick={handleFormToggle}>
+          {isRegistering ? 'Already registered' : 'Register'}
+        </button>
+      </div>
+    </div>
+  );
 }
+
+Login.propTypes = {
+  defaultRegisterState: PropTypes.bool,
+};
 
 export default Login;

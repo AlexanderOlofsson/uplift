@@ -28,7 +28,7 @@ router.post('/login', async (req, res) => {
         }
 
         // Check if the user already has activities for today
-        const today = new Date().toISOString().split('T')[0]; // Format today's date as YYYY-MM-DD
+        const today = new Date().toISOString().split('T')[0]; // Format todays date
         const activitiesResult = await dbFountain.query(
             `SELECT * FROM DailyActivities WHERE user_id = $1 AND date = $2`,
             [user.uid, today]
@@ -39,7 +39,7 @@ router.post('/login', async (req, res) => {
             await assignDailyActivitiesForUser(user.uid);
         }
 
-        // Create a JWT token
+        // Create a token
         const token = jwt.sign({ userId: user.uid }, JWT_KEY, { expiresIn: '1h' });
 
         res.json({ message: 'Login successful.', token }); // Send the token back to client
@@ -51,24 +51,31 @@ router.post('/login', async (req, res) => {
 
 // Register route
 router.post('/register', async (req, res) => {
-    const { firstName, lastName, birthDate, username, email, password } = req.body;
+  const { firstName, lastName, birthDate, username, email, password } = req.body;
 
-    try {
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10);
+  try {
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Add the new user into the db
-        const result = await dbFountain.query(
-            'INSERT INTO users (first_name, last_name, birth_date, username, email, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-            [firstName, lastName, birthDate, username, email, hashedPassword]
-        );
+      // Add the new user into the db
+      const result = await dbFountain.query(
+          'INSERT INTO users (first_name, last_name, birth_date, username, email, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+          [firstName, lastName, birthDate, username, email, hashedPassword]
+      );
 
-        // Status created user data
-        res.status(201).json({ message: 'Account created.', user: result.rows[0] });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Failed to create account. Dont hate the game, hate the server.' });
-    }
+      const newUser = result.rows[0];
+
+      // Add to the stats table
+      await dbFountain.query(
+          'INSERT INTO statistics (user_id) VALUES ($1)',
+          [newUser.uid]
+      );
+
+      res.status(201).json({ message: 'Account created.', user: newUser });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Failed to create account. Dont hate the game, hate the server.' });
+  }
 });
 
 module.exports = router;

@@ -12,24 +12,30 @@ async function assignDailyActivities() {
     for (const user of users) {
       for (const category of categories) {
         // Get a random activity from the specific category
-        const activityResult = await db.query(`
+        const activityResult = await db.query(
+          `
           SELECT id FROM Activities WHERE category = $1 ORDER BY RANDOM() LIMIT 1
-        `, [category]);
+          `,
+          [category]
+        );
 
         if (activityResult.rows.length > 0) {
           const activity = activityResult.rows[0];
 
-          await db.query(`
+          await db.query(
+            `
             INSERT INTO DailyActivities (user_id, activity_id, date, category)
             VALUES ($1, $2, CURRENT_DATE, $3)
             ON CONFLICT (user_id, date, category) DO NOTHING
-          `, [user.uid, activity.id, category]);
+            `,
+            [user.uid, activity.id, category]
+          );
         }
       }
     }
-    console.log('Dagliga aktiviteter tilldelade per kategori.');
+    console.log('Activites added to user/users.');
   } catch (error) {
-    console.error('Error assigning daily activities:', error);
+    console.error('Something went wrong assigning daily activities:', error);
   }
 }
 
@@ -40,37 +46,59 @@ async function assignDailyActivitiesForUser(userId) {
 
     for (const category of categories) {
       // Get a random activity from the specific category
-      const activityResult = await db.query(`
+      const activityResult = await db.query(
+        `
         SELECT id FROM Activities WHERE category = $1 ORDER BY RANDOM() LIMIT 1
-      `, [category]);
+        `,
+        [category]
+      );
 
       if (activityResult.rows.length > 0) {
         const activity = activityResult.rows[0];
 
-        await db.query(`
+        await db.query(
+          `
           INSERT INTO DailyActivities (user_id, activity_id, date, category)
           VALUES ($1, $2, CURRENT_DATE, $3)
           ON CONFLICT (user_id, date, category) DO NOTHING
-        `, [userId, activity.id, category]);
+          `,
+          [userId, activity.id, category]
+        );
       }
     }
-    console.log(`Activities assigned to user: ${userId}`);
+    console.log(`Activities got assigned to user: ${userId}`);
   } catch (error) {
-    console.error(`Error assigning daily activities for user ${userId}:`, error);
+    console.error(`Something wrong happend when assigning for user ${userId}:`, error);
   }
 }
 
-// Function runs every midnight (CEST)
-cron.schedule('0 0 * * *', () => {
-  const currentTime = new Date();
-  const CESTOffset = 2;
-  currentTime.setHours(currentTime.getHours() + CESTOffset);
-
-  if (currentTime.getHours() === 0) {
-    assignDailyActivities();
+// Reset completed tasks to FALSE (need testing)
+const resetCompletedTasks = async () => {
+  try {
+    await db.query(
+      `
+      UPDATE DailyActivities
+      SET completed = FALSE
+      WHERE date = CURRENT_DATE
+      `
+    );
+    console.log('All tasks reset.');
+  } catch (error) {
+    console.error('Could not reset tasks:', error);
   }
-}, {
-  timezone: 'Europe/Stockholm'
-});
+};
+
+// Function runs every midnight (CEST) for assigning activities and resetting tasks
+cron.schedule(
+  '0 0 * * *',
+  async () => {
+    console.log('Running midnight tasks...');
+    await assignDailyActivities();
+    await resetCompletedTasks();
+  },
+  {
+    timezone: 'Europe/Stockholm',
+  }
+);
 
 module.exports = { assignDailyActivities, assignDailyActivitiesForUser };
