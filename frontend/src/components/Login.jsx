@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './Login.css';
+import '../pages/PrivacyPolicy.css'; // Importera CSS-filen
+import PrivacyPolicy from '../pages/PrivacyPolicy'; // Importera PrivacyPolicy-komponenten
 
 function Login({ defaultRegisterState = false }) {
   // Toggle between login and register
@@ -23,6 +25,10 @@ function Login({ defaultRegisterState = false }) {
 
   const navigate = useNavigate(); // For redirecting after login/register
 
+  
+  const [isPrivacyPolicyOpen, setPrivacyPolicyOpen] = useState(false); 
+  const [hasConsented, setHasConsented] = useState(false); 
+
   const handleFormToggle = () => {
     setIsRegistering(!isRegistering); // Switch form mode
     setFirstName(''); // Clear form fields
@@ -35,10 +41,15 @@ function Login({ defaultRegisterState = false }) {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // No page refresh, please
-    setError(null); // Clear any old errors
+    e.preventDefault();
+    setError(null);
 
-    // Choose between login or register based on form mode
+    if (isRegistering && !hasConsented) {
+      setError('You must accept the privacy policy before registering.');
+      return;
+    }
+
+   
     isRegistering ? await handleRegister() : await handleLogin();
   };
 
@@ -55,16 +66,13 @@ function Login({ defaultRegisterState = false }) {
       const data = await response.json();
 
       if (!response.ok) {
-        // If login fails, show an error
         setError(data.message || 'Login failed');
       } else {
-        console.log('Login successful!');
-        localStorage.setItem('token', data.token); // Save JWT-token before we go on dashboard trip
-        navigate('/dashboard'); // Off we go to the dashboard boys
-        console.log('JWT Token still works, niceee:', data.token);
+        localStorage.setItem('token', data.token);
+        navigate('/dashboard');
       }
+        // eslint-disable-next-line no-unused-vars
     } catch (error) {
-      console.error('Error:', error);
       setError('Server issue, try again later');
     }
   };
@@ -91,13 +99,22 @@ function Login({ defaultRegisterState = false }) {
       if (!response.ok) {
         setError(data.message || 'Account creation failed.');
       } else {
-        console.log('Account created.');
         handleFormToggle();
       }
+        // eslint-disable-next-line no-unused-vars
     } catch (error) {
-      console.error('Error:', error);
       setError('Something went wrong.');
     }
+  };
+
+  // Ny funktion för att öppna/stänga privacy policy-modal och bevara kryssrutans status
+  const togglePrivacyPolicy = () => {
+    setPrivacyPolicyOpen(!isPrivacyPolicyOpen);
+  };
+
+  // Ny funktion för att hantera ändringar i samtyckeskryssrutan
+  const handleConsentChange = (checked) => {
+    setHasConsented(checked);
   };
 
   return (
@@ -169,6 +186,22 @@ function Login({ defaultRegisterState = false }) {
                   required
                 />
               </div>
+
+              {/* Länk till privacy policy och kryssruta för samtycke */}
+              <label>
+                <input
+                  type="checkbox"
+                  checked={hasConsented}
+                  onChange={() => setHasConsented(!hasConsented)}
+                  disabled
+                />
+                <span
+                  onClick={togglePrivacyPolicy}
+                  style={{ color: 'blue', cursor: 'pointer', textDecoration: 'underline' }}
+                >
+                  Integritetsskyddspolicy
+                </span>
+              </label>
             </>
           ) : (
             <>
@@ -200,6 +233,25 @@ function Login({ defaultRegisterState = false }) {
         <button onClick={handleFormToggle}>
           {isRegistering ? 'Already registered' : 'Register'}
         </button>
+
+        {isPrivacyPolicyOpen && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <button onClick={togglePrivacyPolicy} className="close-button">✕</button>
+              <div className="policy-content">
+                <PrivacyPolicy />
+              </div>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={hasConsented}
+                  onChange={(e) => handleConsentChange(e.target.checked)}
+                />
+                I have read and accept Uplift's privacy policy.
+              </label>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

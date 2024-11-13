@@ -11,7 +11,7 @@ function Footer() {
           <a href="/help" className="footer-link">Help</a>
           <a href="/contact" className="footer-link">Contact Us</a>
           <a href="/terms" className="footer-link">Terms of Service</a>
-          <a href="/privacy" className="footer-link">Privacy Policy (GDPR)</a>
+          <a href="/privacy-policy" className="footer-link">Privacy Policy (GDPR)</a>
         </div>
         <div className="footer-info">
           <p>Contact: support@uplift.com | Phone: 031-123-456-789</p>
