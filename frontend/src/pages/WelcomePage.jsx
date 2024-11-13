@@ -6,6 +6,7 @@ import image2 from '../assets/images/image2.jpg';
 import image3 from '../assets/images/image3.jpg';
 import './WelcomePage.css';
 import TodaysTasks from '../components/TodaysTasks';
+import Mentor from '../components/Mentor';
 
 function WelcomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -85,6 +86,7 @@ function WelcomePage() {
           </motion.div>
 
           <TodaysTasks />
+          <Mentor />
 
           <div className="image-gallery">
             <motion.div

@@ -66,6 +66,20 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.dailyactivities
     OWNER to postgres;
 
+-- Mentors
+CREATE TABLE IF NOT EXISTS public.mentors
+(
+    id SERIAL PRIMARY KEY,
+    mentor_id BIGINT REFERENCES public.users(uid) ON DELETE CASCADE,
+    user_id BIGINT REFERENCES public.users(uid) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT NOW(),
+    CONSTRAINT unique_mentor_user UNIQUE (mentor_id, user_id)
+)
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.mentors
+    OWNER TO postgres;
+
 
 -- Table statistics
 
