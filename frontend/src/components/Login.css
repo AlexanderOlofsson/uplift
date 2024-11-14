@@ -69,10 +69,44 @@
     transition: background-color 0.3s ease;
 }
 
+span{
+    color:blue;
+}
+span:hover {
+    text-decoration: underline; 
+}
+
+.custom-checkbox {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 10px;
+}
+
+
+
+
 .user-form button:hover {
     background-color: #0056b3;
 }
 
-.return-button{
+.user-form .return-button{
     margin-bottom: 3rem;
+    background-color: #E09339;
+
+}
+
+.logo {
+    font-size: 5rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-family: "Humane";
+    color: #1F49A4
+  }
+
+@font-face {
+    font-family: "Humane";
+    src: url('../fonts/Humane-Regular.woff2') format('woff2'),
+         url('../fonts/Humane-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
