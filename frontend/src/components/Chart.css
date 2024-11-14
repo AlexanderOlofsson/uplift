@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Matemasie&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+.yourStatsTitle {
+  font-family: "Sour Gummy", 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  z-index: 1;
+  color: #E09339;
+  font-weight: bold;
+}
+
+.chartContainerComponent {
+  width: 260px;
+  height: 260px;
+  margin-bottom: 10px;
+}

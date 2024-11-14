@@ -7,6 +7,7 @@ const userRoutes = require('./routes/user');
 const activityRoutes = require('./routes/activity');
 const mentorsRoutes = require('./routes/mentor');
 const statisticsRoutes = require('./routes/statistics');
+const quotesRouter = require('./routes/quotes')
 require('./scheduler');
 
 
@@ -24,6 +25,7 @@ app.use('/users', userRoutes);
 app.use('/api/activities', activityRoutes);
 app.use('/mentor', mentorsRoutes);
 app.use('/statistics', statisticsRoutes);
+app.use('/quotes', quotesRouter);
 
 
 

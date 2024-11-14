@@ -6,16 +6,12 @@ import { useNavigate } from 'react-router-dom';
 // import image3 from '../assets/images/image3.jpg';
 import './WelcomePage.css';
 import TodaysTasks from '../components/TodaysTasks';
-<<<<<<< HEAD
 import Chart from '../components/Chart'
 import HotStreak from '../components/HotStreak';
 import Quote from '../components/Quote';
 // import Mentor from '../components/Mentor';
-=======
-import Mentor from '../components/Mentor';
 import Footer from '../components/Footer';
 
->>>>>>> 9555574882bebaa90c07e3610843133b7edbef04
 
 function WelcomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -79,8 +75,7 @@ function WelcomePage() {
         </nav>
       </header>
 
-      <main>
-        <div className="content">
+
           {/* <motion.div
             className="text-content"
             variants={textAppear}
@@ -93,26 +88,25 @@ function WelcomePage() {
               Here are your daily tasks designed to uplift your physical health, strengthen your social bonds, and fuel your personal growth. Every day is an opportunity to become a better you.
             </p>
           </motion.div> */}
-          <div className="trinity-container">
-        <div className="dailyActivityContainer">
-          <TodaysTasks />
-          </div>
-          <div className="hotStreakContainer">
-          <HotStreak token={token} />
-          </div>
-          <div className="chartContainer">
-          <Chart token={token}/>
-          </div>
-          <div className="quoteContainer">
-          <Quote/>
-          </div>
-          <div className="quoteContainer">
-          <Quote/>
-          </div>
-          {/* <Mentor /> */}
+<div className="allContentContainer">
+  <div className="dailyQuoteContainer">
+    <Quote />
+  </div>
+  <div className="trinity-container">
+    <div className="hotStreakContainer">
+      <HotStreak token={token} />
     </div>
+    <div className="dailyActivityContainer">
+      <TodaysTasks />
     </div>
-      </main>
+    <div className="chartContainer">
+      <Chart token={token} />
+    </div>
+  </div>
+</div>
+
+
+
 
       <Footer />
     </motion.div>

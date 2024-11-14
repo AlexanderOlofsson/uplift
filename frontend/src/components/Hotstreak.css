@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Matemasie&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
+
+.hotStreakContainer2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.hotStreakTitle {
+  font-family: "Sour Gummy", 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  position: absolute;
+  top: 20px;
+  z-index: 1;
+  color: #E09339;
+  font-weight: bold;
+}
+
+.hotStreakAnimation {
+  margin: 10px 0 20px 0;
+}
+
+.streakNumberContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  background-color: #E09339;
+  text-align: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  color: white;
+  position: absolute;
+  bottom: 20px;
+  z-index: 1;
+}
+
+.streakNumberContainer0 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  background-color: #d3d3d3;
+  text-align: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  color: white;
+  position: absolute;
+  bottom: 20px;
+  z-index: 1;
+}

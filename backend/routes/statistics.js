@@ -66,6 +66,57 @@ router.put('/complete-task', authenticateToken, async (req, res) => {
   }
 });
 
+// GET - Fetch user statistics (for the chart)
+router.get('/', authenticateToken, async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    const stats = await db.query(
+      `
+      SELECT total_tasks_completed, mental_tasks_completed, physical_tasks_completed, social_tasks_completed
+      FROM statistics
+      WHERE user_id = $1
+      `,
+      [userId]
+    );
+
+    if (stats.rows.length === 0) {
+      return res.status(404).json({ message: 'No stats found for the user.' });
+    }
+
+    res.json(stats.rows[0]);
+  } catch (error) {
+    console.error('Something went wrong buddy fetching statistics:', error);
+    res.status(500).json({ message: 'Could not fetch statistics.' });
+  }
+});
+
+
+router.get('/streak', authenticateToken, async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    const result = await db.query(
+      `
+      SELECT streak_days
+      FROM statistics
+      WHERE user_id = $1;
+      `,
+      [userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'No streak found for this user.' });
+    }
+
+    res.json({ streak_days: result.rows[0].streak_days });
+  } catch (error) {
+    console.error('Error fetching streak:', error);
+    res.status(500).json({ message: 'Something went wrong when fetch streak.' });
+  }
+});
+
+
 
 
 module.exports = router;

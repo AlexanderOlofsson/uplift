@@ -72,7 +72,8 @@ body {
 }
 
 .loginBtn:hover {
-  border: 1px solid #252525;
+  border: 1px solid #3367a1;
+  color: #f9f9f9;
 }
 
 .signupBtn:hover {
