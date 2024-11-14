@@ -17,7 +17,7 @@ router.post('/login', async (req, res) => {
         const result = await dbFountain.query('SELECT * FROM users WHERE username = $1', [username]);
 
         if (result.rows.length === 0) {
-            return res.status(400).json({ message: 'That username does not exist. Or something in my code is wrong, lol.' });
+            return res.status(400).json({ message: 'That username does not exist.' });
         }
 
         const user = result.rows[0];
@@ -41,7 +41,6 @@ router.post('/login', async (req, res) => {
 
         // Create a token
         const token = jwt.sign({ userId: user.uid }, JWT_KEY, { expiresIn: '1h' });
-
         res.json({ message: 'Login successful.', token }); // Send the token back to client
     } catch (error) {
         console.error(error);

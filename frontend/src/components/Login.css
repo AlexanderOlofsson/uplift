@@ -1,3 +1,7 @@
+* {
+  font-family: 'Roboto';
+}
+
 .user-form-container {
     display: flex;
     justify-content: center;
@@ -27,14 +31,6 @@
     margin-bottom: 20px;
 }
 
-.user-form label {
-    display: block;
-    font-weight: bold;
-    color: #555;
-    margin-bottom: 8px;
-    text-align: left;
-}
-
 .form-row {
     display: flex;
     justify-content: space-between;
@@ -45,7 +41,7 @@
     flex: 1;
 }
 
-.user-form input {
+.normalInput {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -69,31 +65,90 @@
     transition: background-color 0.3s ease;
 }
 
-span{
-    color:blue;
+.piiText {
+    display: flex;
+    justify-content: left;
+    text-align: center;
+    color: #505050;
+    font-weight: 400;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: underline;
 }
-span:hover {
-    text-decoration: underline; 
+.piiText:hover {
+    text-decoration: underline;
+    color: #252525;
+
+}
+
+.pii {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between;
+}
+
+.preCheck {
+  justify-content: right;
+  width: 20px;
+  margin-left: 18px;
 }
 
 .custom-checkbox {
+    text-align: center;
     width: 20px;
     height: 20px;
-    margin-bottom: 10px;
+    justify-content: right;
+    margin-left: 18px;
+}
+
+.custom-checkbox-container {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
 }
 
 
-
+/* #E09339; */
 
 .user-form button:hover {
     background-color: #0056b3;
 }
 
+.user-form button:focus {
+  outline: none;
+}
+
 .user-form .return-button{
     margin-bottom: 3rem;
-    background-color: #E09339;
+    background-color: #f9f9f9;
+    color: #505050;
+    border: solid 1px #757575;
 
 }
+
+.user-form .return-button:hover{
+  margin-bottom: 3rem;
+  background-color: #E09339;
+  color: #f9f9f9;
+  border: solid 1px #E09339;;
+  outline: none;
+  border: solid 1px #e09339;
+
+}
+
+.regiTglBtn {
+  background-color: #E09339 !important;
+}
+
+.regiTglBtn:hover,
+.regiTglBtn:focus {
+  background-color: #d6882e !important;
+  outline: none;
+  border: none;
+}
+
+
 
 .logo {
     font-size: 5rem;

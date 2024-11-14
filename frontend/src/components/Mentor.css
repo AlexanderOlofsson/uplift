@@ -36,10 +36,10 @@
     cursor: pointer;
   }
 
-  button:first-child {
+  /* button:first-child {
     background-color: #4caf50;
     color: white;
-  }
+  } */
 
   /* button:last-child {
     background-color: #f44336;

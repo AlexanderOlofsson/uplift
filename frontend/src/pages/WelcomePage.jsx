@@ -15,10 +15,18 @@ import Footer from '../components/Footer';
 
 function WelcomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const navigate=useNavigate();
+  const [updateTrigger, setUpdateTrigger] = useState(0); // För trigger
+
   const token = localStorage.getItem('token');
+  const navigate = useNavigate();
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleTaskComplete = () => {
+    // Ökar trigger varje gång en uppgift slutförs
+    setUpdateTrigger((prev) => prev + 1);
   };
 
   const handleLogout = () => {
@@ -36,17 +44,9 @@ function WelcomePage() {
     visible: { opacity: 1, x: 0, transition: { duration: 0.8, delay: 0.3 } },
   };
 
-  const imageHoverEffect = {
-    hover: { scale: 1.1, transition: { duration: 0.3 } },
-  };
-
-  const textHoverEffect = {
-    hover: { scale: 1.05, transition: { duration: 0.3 } },
-  };
-
   return (
     <motion.div
-      className="container"
+      className="dashboard-container"
       variants={textAppear}
       initial="hidden"
       animate="visible"
@@ -62,9 +62,6 @@ function WelcomePage() {
             <span></span>
           </div>
           <div className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
-            <motion.a href="#" className="nav-link" variants={linkEffect}>
-              Your Progress
-            </motion.a>
             <motion.a href="/dashboard/profile" className="nav-link" variants={linkEffect}>
               Profile
             </motion.a>
@@ -88,26 +85,27 @@ function WelcomePage() {
               Here are your daily tasks designed to uplift your physical health, strengthen your social bonds, and fuel your personal growth. Every day is an opportunity to become a better you.
             </p>
           </motion.div> */}
-<div className="allContentContainer">
-  <div className="dailyQuoteContainer">
-    <Quote />
-  </div>
-  <div className="trinity-container">
-    <div className="hotStreakContainer">
-      <HotStreak token={token} />
-    </div>
-    <div className="dailyActivityContainer">
-      <TodaysTasks />
-    </div>
-    <div className="chartContainer">
-      <Chart token={token} />
-    </div>
-  </div>
-</div>
+    <div className="allContentContainer">
+      <div className="dailyQuoteContainer">
+        <Quote />
+      </div>
+      <div className="trinity-container">
+        <div className="hotStreakContainer">
+          <HotStreak token={token} triggerUpdate={updateTrigger}/>
+        </div>
+        <div className="dailyActivityContainer">
+          <TodaysTasks token={token} onTaskComplete={handleTaskComplete} />
+        </div>
+        <div className="chartContainer">
+          <Chart token={token} triggerUpdate={updateTrigger} />
+        </div>
+      </div>
 
 
 
 
+
+      </div>
       <Footer />
     </motion.div>
   );

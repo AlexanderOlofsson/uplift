@@ -82,20 +82,41 @@ button {
     margin-top: 10px;
 }
 
+.editProfileBtn {
+  background-color: #3367a1;
+}
+
+.updateEditBtn {
+  background-color: #3367a1;
+}
+
+.cancelEditBtn {
+  background-color: #f9f9f9;
+  color: #505050;
+  border: solid 1px #505050;
+}
+
+.cancelEditBtn:hover {
+  background-color: #E09339;
+  color: #f9f9f9;
+  border: solid 1px #E09339;
+}
+
+
 button:hover {
     background-color: #0056b3;
 }
 
 .delete-button {
-    background-color: #e16931;
-}
-
-.delete-button:hover {
     background-color: #c0392b;
 }
 
+.delete-button:hover {
+    background-color: #8a271c;
+}
+
 .return-button {
-    background-color: #E09339 !important; 
+    background-color: #E09339;
     color: white;
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
@@ -108,7 +129,7 @@ button:hover {
 }
 
 .return-button:hover {
-    background-color: #CC7A1B;
+    background-color: #c77e2a;
 }
 
 .profile-modal-overlay {

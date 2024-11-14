@@ -88,53 +88,6 @@ const resetCompletedTasks = async () => {
   }
 };
 
-// Update streaks for all users
-const updateStreaks = async () => {
-  try {
-    const users = await db.query('SELECT uid FROM Users');
-    for (const user of users.rows) {
-      const userId = user.uid;
-
-      // Check if user completed task today
-      const activities = await db.query(
-        `
-        SELECT COUNT(*) AS completed_count
-        FROM DailyActivities
-        WHERE user_id = $1 AND completed = TRUE AND date = CURRENT_DATE;
-        `,
-        [userId]
-      );
-
-      const completedToday = parseInt(activities.rows[0].completed_count, 10);
-
-      if (completedToday > 0) {
-        // If user completed, ++ streak
-        await db.query(
-          `
-          UPDATE Statistics
-          SET streak_days = streak_days + 1, updated_at = NOW()
-          WHERE user_id = $1;
-          `,
-          [userId]
-        );
-        console.log(`Streak incremented for user ${userId}`);
-      } else {
-        // If nothing was completed reset
-        await db.query(
-          `
-          UPDATE Statistics
-          SET streak_days = 0, updated_at = NOW()
-          WHERE user_id = $1;
-          `,
-          [userId]
-        );
-        console.log(`Streak reset for user ${userId}`);
-      }
-    }
-  } catch (error) {
-    console.error('Error updating streaks:', error);
-  }
-};
 
 // Function runs every midnight (CEST) for assigning activities, resetting tasks, and updating streaks
 cron.schedule(
@@ -143,7 +96,6 @@ cron.schedule(
     console.log('Running midnight tasks...');
     await assignDailyActivities();
     await resetCompletedTasks();
-    await updateStreaks();
   },
   {
     timezone: 'Europe/Stockholm',

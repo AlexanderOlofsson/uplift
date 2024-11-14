@@ -155,6 +155,7 @@ function Login({ defaultRegisterState = false }) {
                   <label>First name:</label>
                   <input
                     type="text"
+                    className="normalInput"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     required
@@ -170,57 +171,62 @@ function Login({ defaultRegisterState = false }) {
                   />
                 </div>
               </div>
-              <div className="form-row">
+
                 <div>
                   <label>Birth (yyyy-mm-dd):</label>
                   <input
                     type="date"
+                    className="normalInput"
                     value={birthDate}
                     onChange={(e) => setBirthDate(e.target.value)}
                     required
                   />
                 </div>
                 <div>
-                  <label>Username:</label>
-                  <input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                  />
-                </div>
-              </div>
-              <div>
+                <div>
                 <label>Email:</label>
                 <input
                   type="email"
+                  className="normalInput"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
+                  <label>Username:</label>
+                  <input
+                    type="text"
+                    className="normalInput"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                  />
+                </div>
               <div>
                 <label>Password:</label>
                 <input
                   type="password"
+                  className="normalInput"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={hasConsented}
-                  onChange={() => setHasConsented(!hasConsented)}
-                  disabled
-                />
-                <span
+              <label className="pii">
+              <span className="piiText"
                   onClick={togglePrivacyPolicy}
 
                 >
                   Personally Identifiable Information
                 </span>
+                <input
+                  type="checkbox"
+                  className="preCheck"
+                  checked={hasConsented}
+                  onChange={() => setHasConsented(!hasConsented)}
+                  disabled
+                />
+
               </label>
             </>
           ) : (
@@ -250,7 +256,7 @@ function Login({ defaultRegisterState = false }) {
           <button type="submit">{isRegistering ? 'Register' : 'Login'}</button>
         </form>
 
-        <button onClick={handleFormToggle}>
+        <button onClick={handleFormToggle} className="regiTglBtn">
           {isRegistering ? 'Login' : 'Register'}
         </button>
         <button onClick={() => navigate('/')} className="return-button">
@@ -263,14 +269,14 @@ function Login({ defaultRegisterState = false }) {
               <div className="policy-content">
                 <PrivacyPolicy />
               </div>
-              <label>
+              <label className="custom-checkbox-container">
+              I have read and accept Uplift's privacy policy.
                 <input
                   type="checkbox"
                   className="custom-checkbox"
                   checked={hasConsented}
                   onChange={(e) => handleConsentChange(e.target.checked)}
                 />
-                I have read and accept Uplift's privacy policy.
               </label>
             </div>
           </div>

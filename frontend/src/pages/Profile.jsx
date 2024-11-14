@@ -197,8 +197,8 @@ function Profile() {
                     </div>
 
                     <div className="button-group">
-                        <button onClick={handleUpdate}>Update</button>
-                        <button onClick={handleEditToggle}>Cancel</button>
+                        <button onClick={handleUpdate} className="updateEditBtn">Update</button>
+                        <button onClick={handleEditToggle} className="cancelEditBtn">Cancel</button>
                     </div>
                     <button onClick={() => navigate('/dashboard')} className="return-button">
                         Return to Dashboard
@@ -212,7 +212,8 @@ function Profile() {
                     <p><strong>Username:</strong> {user.username}</p>
                     <p><strong>Email:</strong> {user.email}</p>
                     <div className="button-group">
-                        <button onClick={handleEditToggle}>Edit Profile</button>
+                        <button className="editProfileBtn"
+                        onClick={handleEditToggle}>Edit Profile</button>
                         <button
                             className="delete-button"
                             onClick={() => user.username && setShowDeleteModal(true)}

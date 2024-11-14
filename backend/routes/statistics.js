@@ -28,6 +28,7 @@ router.put('/complete-task', authenticateToken, async (req, res) => {
   const userId = req.user.userId;
 
   try {
+    // Mark the task as completed
     const updateTaskResult = await db.query(
       `
       UPDATE DailyActivities
@@ -42,6 +43,7 @@ router.put('/complete-task', authenticateToken, async (req, res) => {
       return res.status(404).json({ message: 'Activity not found or already completed.' });
     }
 
+    // Update total and category-specific task counts
     let updateQuery = `
       UPDATE statistics
       SET total_tasks_completed = total_tasks_completed + 1, updated_at = NOW()
@@ -59,12 +61,39 @@ router.put('/complete-task', authenticateToken, async (req, res) => {
 
     await db.query(updateQuery, [userId]);
 
-    res.json({ message: 'Task marked as completed and statistics updated.' });
+    // Check if this is the first task completed today
+    const today = new Date().toISOString().split('T')[0];
+    const completedTodayResult = await db.query(
+      `
+      SELECT COUNT(*) AS completed_count
+      FROM DailyActivities
+      WHERE user_id = $1 AND completed = TRUE AND date = $2
+      `,
+      [userId, today]
+    );
+
+    const completedToday = parseInt(completedTodayResult.rows[0].completed_count, 10);
+
+    if (completedToday === 1) {
+      // First task completed today, update streak
+      await db.query(
+        `
+        UPDATE statistics
+        SET streak_days = streak_days + 1, updated_at = NOW()
+        WHERE user_id = $1
+        `,
+        [userId]
+      );
+      console.log(`Streak incremented for user ${userId}`);
+    }
+
+    res.json({ message: 'Task marked as completed, statistics updated, and streak updated if applicable.' });
   } catch (error) {
     console.error('Something went wrong:', error);
     res.status(500).json({ message: 'Could not complete task.' });
   }
 });
+
 
 // GET - Fetch user statistics (for the chart)
 router.get('/', authenticateToken, async (req, res) => {

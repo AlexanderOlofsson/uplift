@@ -12,6 +12,7 @@ import ReviewMarque from '../components/ReviewMarquee';
 import TodaysTasks from '../components/TodaysTasks';
 
 function AppRoutes() {
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />

@@ -75,6 +75,12 @@
     transition: background-color 0.3s, color 0.3s;
   }
 
+  .nav-link:hover {
+    background-color: #1F49A4;
+    color: #f9f9f9;
+    border: 1px solid #1F49A4;
+  }
+
 
   .hamburger {
     display: none;

@@ -3,6 +3,7 @@ const router = express.Router();
 const dbFountain = require('../db');
 const jwt = require('jsonwebtoken');
 const JWT_KEY = process.env.JWT_KEY;
+const bcrypt = require('bcrypt');
 
 // Middleware to check the token
 const authenticateToken = (req, res, next) => {
@@ -58,23 +59,41 @@ router.put('/profile', authenticateToken, async (req, res) => {
   const { firstName, lastName, birthDate, username, email, password } = req.body;
 
   try {
-      const query = `
-          UPDATE users
-          SET first_name = $1, last_name = $2, birth_date = $3, username = $4, email = $5
-          WHERE uid = $6
-          RETURNING first_name, last_name, birth_date, username, email
-      `;
+    console.log('Incoming data:', { firstName, lastName, birthDate, username, email, password });
 
-      const values = [firstName, lastName, birthDate, username, email, req.user.userId];
+    let query = `
+      UPDATE users
+      SET first_name = $1, last_name = $2, birth_date = $3, username = $4, email = $5
+    `;
 
-      const result = await dbFountain.query(query, values);
+    const values = [firstName, lastName, birthDate, username, email];
 
-      res.json({ message: 'Profile updated', user: result.rows[0] });
+    if (password) {
+      console.log('Hashing password...');
+      const hashedPassword = await bcrypt.hash(password, 10);
+      query += `, password = $6`;
+      values.push(hashedPassword);
+    }
+
+    query += ` WHERE uid = $${values.length + 1} RETURNING first_name, last_name, birth_date, username, email`;
+
+    values.push(req.user.userId);
+
+    console.log('Final SQL Query:', query, values);
+
+    const result = await dbFountain.query(query, values);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    res.json({ message: 'Profile updated', user: result.rows[0] });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Something went wrong during update' });
+    console.error('Error in profile update:', error);
+    res.status(500).json({ message: 'Something went wrong during update' });
   }
 });
+
 
 
 // DELETE - Sadly, Delete the user

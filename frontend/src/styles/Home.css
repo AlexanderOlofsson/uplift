@@ -81,6 +81,16 @@ body {
   border: none;
 }
 
+.loginBtn:focus
+ {
+  outline: none;
+
+}
+
+.signupBtn:focus {
+  outline: none;
+}
+
 /* Second Section  */
 
 h2 {
