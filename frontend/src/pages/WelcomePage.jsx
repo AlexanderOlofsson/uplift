@@ -1,17 +1,20 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import image1 from '../assets/images/image1.jpg';
-import image2 from '../assets/images/image2.jpg';
-import image3 from '../assets/images/image3.jpg';
+// import image1 from '../assets/images/image1.jpg';
+// import image2 from '../assets/images/image2.jpg';
+// import image3 from '../assets/images/image3.jpg';
 import './WelcomePage.css';
 import TodaysTasks from '../components/TodaysTasks';
-import Mentor from '../components/Mentor';
+import Chart from '../components/Chart'
+import HotStreak from '../components/HotStreak';
+import Quote from '../components/Quote';
+// import Mentor from '../components/Mentor';
 
 function WelcomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate=useNavigate();
-
+  const token = localStorage.getItem('token');
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -72,7 +75,7 @@ function WelcomePage() {
 
       <main>
         <div className="content">
-          <motion.div
+          {/* <motion.div
             className="text-content"
             variants={textAppear}
             initial="hidden"
@@ -83,64 +86,26 @@ function WelcomePage() {
               <br />
               Here are your daily tasks designed to uplift your physical health, strengthen your social bonds, and fuel your personal growth. Every day is an opportunity to become a better you.
             </p>
-          </motion.div>
-
+          </motion.div> */}
+          <div className="trinity-container">
+        <div className="dailyActivityContainer">
           <TodaysTasks />
-          <Mentor />
-
-          <div className="image-gallery">
-            <motion.div
-              className="image-wrapper"
-              variants={imageHoverEffect}
-              whileHover="hover"
-            >
-              <a href="physical" className="image-link">
-                <img
-                  src={image3}
-                  alt="Physical"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-                <motion.p className="image-caption" variants={textHoverEffect}>
-                  Physical
-                </motion.p>
-              </a>
-            </motion.div>
-
-            <motion.div
-              className="image-wrapper"
-              variants={imageHoverEffect}
-              whileHover="hover"
-            >
-              <a href="/social" className="image-link">
-                <img
-                  src={image2}
-                  alt="Social"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-                <motion.p className="image-caption" variants={textHoverEffect}>
-                  Social
-                </motion.p>
-              </a>
-            </motion.div>
-
-            <motion.div
-              className="image-wrapper"
-              variants={imageHoverEffect}
-              whileHover="hover"
-            >
-              <a href="/mental" className="image-link">
-                <img
-                  src={image1}
-                  alt="Mental"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-                <motion.p className="image-caption" variants={textHoverEffect}>
-                  Mental
-                </motion.p>
-              </a>
-            </motion.div>
           </div>
-        </div>
+          <div className="hotStreakContainer">
+          <HotStreak token={token} />
+          </div>
+          <div className="chartContainer">
+          <Chart token={token}/>
+          </div>
+          <div className="quoteContainer">
+          <Quote/>
+          </div>
+          <div className="quoteContainer">
+          <Quote/>
+          </div>
+          {/* <Mentor /> */}
+    </div>
+    </div>
       </main>
 
       <footer>
