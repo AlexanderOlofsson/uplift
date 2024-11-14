@@ -107,3 +107,10 @@
     color: #000000;
     cursor: pointer;
 }
+
+.return-button {
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

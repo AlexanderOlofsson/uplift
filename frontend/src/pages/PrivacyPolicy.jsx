@@ -1,7 +1,14 @@
 import './PrivacyPolicy.css';
+import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
 
 function PrivacyPolicy() {
+    const navigate = useNavigate();
     return (
+        <>
+           <header className="header">
+                <h1 className="symbol">Uplift</h1>
+            </header>
         <div className="privacy-policy-container">
             <h1>Privacy Policy for Uplift</h1>
             <p>
@@ -43,8 +50,15 @@ function PrivacyPolicy() {
                     <li>Right to Erasure: If you choose to close your account, we will delete all personal data associated with you.</li>
                 </ul>
             </div>
-          
-        </div>
+            <button 
+                className="return-button" 
+                onClick={() => navigate('/dashboard')}
+            >
+                Return to Dashboard
+            </button>
+         </div>
+          <Footer />
+          </>
     );
 }
 
