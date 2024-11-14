@@ -1,3 +1,5 @@
+
+
 .profile-container {
     padding: 2rem;
     background-color: #f7f7f7;
@@ -27,7 +29,7 @@ h1 {
     justify-content: center;
 }
 
-/* Centering content for edit mode */
+
 .edit-form {
     display: flex;
     flex-direction: column;
@@ -38,14 +40,14 @@ h1 {
     text-align: center;
 }
 
-/* Style for input pairs */
+
 .input-pair {
     display: flex;
     gap: 1rem;
     width: 100%;
 }
 
-/* Styling individual input and label */
+
 .input-group {
     flex: 1;
     display: flex;
@@ -66,7 +68,7 @@ input {
     border-radius: 4px;
 }
 
-/* Styling for all buttons */
+
 .button-group {
     display: flex;
     gap: 10px;
@@ -96,4 +98,9 @@ button:hover {
 
 .delete-button:hover {
     background-color: #c0392b;
+}
+
+.footer {
+    margin-top: auto; 
+    width: 100%; 
 }

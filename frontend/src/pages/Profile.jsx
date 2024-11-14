@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Profile.css';
 
 function Profile() {
@@ -16,6 +17,7 @@ function Profile() {
     const [newUsername, setNewUsername] = useState('');
     const [newEmail, setNewEmail] = useState('');
     const [newPassword, setNewPassword] = useState('');
+    const navigate = useNavigate();
 
     // Fetch user data when all loaded, get and check token
     useEffect(() => {
@@ -137,6 +139,9 @@ function Profile() {
 
     return (
         <div className="profile-container">
+            <button onClick={() => navigate('/dashboard')} className="return-button">
+                Return to Dashboard
+            </button>
             <h1>{isEditing ? 'Edit Profile' : 'My Profile'}</h1>
             {isEditing ? (
                 <div className="edit-form">
@@ -166,6 +171,7 @@ function Profile() {
                                 type="date"
                                 value={newBirthDate}
                                 onChange={(e) => setNewBirthDate(e.target.value)}
+                                disabled
                             />
                         </div>
                         <div className="input-group">

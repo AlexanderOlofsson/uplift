@@ -7,6 +7,8 @@ import image3 from '../assets/images/image3.jpg';
 import './WelcomePage.css';
 import TodaysTasks from '../components/TodaysTasks';
 import Mentor from '../components/Mentor';
+import Footer from '../components/Footer';
+
 
 function WelcomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -143,12 +145,7 @@ function WelcomePage() {
         </div>
       </main>
 
-      <footer>
-        <motion.h2 className="logo" variants={textAppear}>
-          Uplift
-        </motion.h2>
-        <p>&copy; 2024 Uplift. All rights reserved.</p>
-      </footer>
+      <Footer />
     </motion.div>
   );
 }

@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './Login.css';
-import '../pages/PrivacyPolicy.css'; // Importera CSS-filen
-import PrivacyPolicy from '../pages/PrivacyPolicy'; // Importera PrivacyPolicy-komponenten
+import '../pages/PrivacyPolicy.css'; 
+import PrivacyPolicy from '../pages/PrivacyPolicy'; 
 
 function Login({ defaultRegisterState = false }) {
   // Toggle between login and register
@@ -20,18 +20,18 @@ function Login({ defaultRegisterState = false }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  // eslint-disable-next-line no-unused-vars
-  const [error, setError] = useState(null); // To hold error messages
+  const [error, setError] = useState(null); 
 
-  const navigate = useNavigate(); // For redirecting after login/register
+  const navigate = useNavigate();
 
-  
+  // State for privacy policy popup
   const [isPrivacyPolicyOpen, setPrivacyPolicyOpen] = useState(false); 
   const [hasConsented, setHasConsented] = useState(false); 
 
+  // Function to toggle form mode
   const handleFormToggle = () => {
-    setIsRegistering(!isRegistering); // Switch form mode
-    setFirstName(''); // Clear form fields
+    setIsRegistering(!isRegistering); 
+    setFirstName(''); 
     setLastName('');
     setBirthDate('');
     setUsername('');
@@ -40,19 +40,40 @@ function Login({ defaultRegisterState = false }) {
     setError(null);
   };
 
+  // Function to calculate age based on birthDate
+  const calculateAge = (birthDate) => {
+    const birth = new Date(birthDate);
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
 
-    if (isRegistering && !hasConsented) {
-      setError('You must accept the privacy policy before registering.');
-      return;
+    if (isRegistering) {
+      if (!hasConsented) {
+        setError('You must accept the privacy policy before registering.');
+        return;
+      }
+
+      const age = calculateAge(birthDate);
+      if (age < 13) {
+        setError('You must be at least 13 years old to register.');
+        return;
+      }
     }
 
-   
     isRegistering ? await handleRegister() : await handleLogin();
   };
 
+  // Login function
   const handleLogin = async () => {
     try {
       const response = await fetch('http://localhost:3000/auth/login', {
@@ -77,6 +98,7 @@ function Login({ defaultRegisterState = false }) {
     }
   };
 
+  // Register function
   const handleRegister = async () => {
     try {
       const response = await fetch('http://localhost:3000/auth/register', {
@@ -107,20 +129,30 @@ function Login({ defaultRegisterState = false }) {
     }
   };
 
-  // Ny funktion för att öppna/stänga privacy policy-modal och bevara kryssrutans status
+  // Toggle privacy policy modal
   const togglePrivacyPolicy = () => {
     setPrivacyPolicyOpen(!isPrivacyPolicyOpen);
   };
 
-  // Ny funktion för att hantera ändringar i samtyckeskryssrutan
+  // Handle consent checkbox change
   const handleConsentChange = (checked) => {
     setHasConsented(checked);
   };
 
   return (
+
+    
+
     <div className="user-form-container">
+
       <div className="user-form">
+      <button onClick={() => navigate('/')} className="return-button">
+        Return to Home
+      </button>
         <h2>{isRegistering ? 'Register' : 'Login'}</h2>
+
+        {error && <div className="error-message">{error}</div>}
+
         <form onSubmit={handleSubmit}>
           {isRegistering ? (
             <>
@@ -186,8 +218,6 @@ function Login({ defaultRegisterState = false }) {
                   required
                 />
               </div>
-
-              {/* Länk till privacy policy och kryssruta för samtycke */}
               <label>
                 <input
                   type="checkbox"
@@ -199,7 +229,7 @@ function Login({ defaultRegisterState = false }) {
                   onClick={togglePrivacyPolicy}
                   style={{ color: 'blue', cursor: 'pointer', textDecoration: 'underline' }}
                 >
-                  Integritetsskyddspolicy
+                  Personally Identifiable Information (PII)
                 </span>
               </label>
             </>

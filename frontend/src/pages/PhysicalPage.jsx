@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import image3 from '../assets/images/image3.jpg';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
 
 function PhysicalPage() {
 const navigate = useNavigate()
@@ -66,12 +67,7 @@ const TextAppear = {
         </motion.div>
       </main>
 
-      <footer>
-        <motion.h2 className="logo" variants={logoEffect}>
-          Uplift
-        </motion.h2>
-        <motion.p variants={textHoverEffect}>&copy; 2024 Uplift. All rights reserved.</motion.p>
-      </footer>
+      <Footer />
     </motion.div>
   )
 }
