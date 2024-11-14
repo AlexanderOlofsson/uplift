@@ -17,6 +17,7 @@ function Profile() {
     const [newUsername, setNewUsername] = useState('');
     const [newEmail, setNewEmail] = useState('');
     const [newPassword, setNewPassword] = useState('');
+    const [showDeleteModal, setShowDeleteModal] = useState(false); // State for showing/hiding delete modal
     const navigate = useNavigate();
 
     // Fetch user data when all loaded, get and check token
@@ -34,7 +35,6 @@ function Profile() {
 
                 if (response.ok) {
                     const data = await response.json();
-                    console.log(data);
                     setUser({
                         firstName: data.first_name,
                         lastName: data.last_name,
@@ -73,75 +73,68 @@ function Profile() {
     };
 
     const handleUpdate = async () => {
-      const token = localStorage.getItem('token');
-      try {
-          const response = await fetch('http://localhost:3000/users/profile', {
-              method: 'PUT',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${token}`,
-              },
-              body: JSON.stringify({
-                  firstName: newFirstName,
-                  lastName: newLastName,
-                  birthDate: newBirthDate,
-                  username: newUsername,
-                  email: newEmail,
-                  password: newPassword
-              }),
-          });
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch('http://localhost:3000/users/profile', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    firstName: newFirstName,
+                    lastName: newLastName,
+                    birthDate: newBirthDate,
+                    username: newUsername,
+                    email: newEmail,
+                    password: newPassword
+                }),
+            });
 
-          if (response.ok) {
-              const data = await response.json();
-              console.log(data);
-
-              const updatedUser = data.user || data;
-              setUser({
-                  firstName: updatedUser.first_name,
-                  lastName: updatedUser.last_name,
-                  birthDate: data.birth_date,
-                  username: updatedUser.username,
-                  email: updatedUser.email
-              });
-              setIsEditing(false); // Toggle/navigate back to profile info
-          } else {
-              console.error('Failed to update user data');
-          }
-      } catch (error) {
-          console.error('Error:', error);
-      }
-  };
-
-
-
-  const handleDelete = async () => {
-    const token = localStorage.getItem('token');
-    try {
-        const response = await fetch('http://localhost:3000/users/profile', {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            },
-        });
-
-        if (response.ok) {
-            console.log('Account deleted, killed and destroyed')
-            localStorage.removeItem('token'); // remove token
-            window.location.href = '/login';
-        } else {
-            console.error('Failed to delete account');
+            if (response.ok) {
+                const data = await response.json();
+                const updatedUser = data.user || data;
+                setUser({
+                    firstName: updatedUser.first_name,
+                    lastName: updatedUser.last_name,
+                    birthDate: data.birth_date,
+                    username: updatedUser.username,
+                    email: updatedUser.email
+                });
+                setIsEditing(false); // Toggle/navigate back to profile info
+            } else {
+                console.error('Failed to update user data');
+            }
+        } catch (error) {
+            console.error('Error:', error);
         }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-};
+    };
 
+    const handleDelete = async () => {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch('http://localhost:3000/users/profile', {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                console.log('Account deleted');
+                localStorage.removeItem('token'); // remove token
+                window.location.href = '/login';
+            } else {
+                console.error('Failed to delete account');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
     return (
         <div className="profile-container">
-            <button onClick={() => navigate('/dashboard')} className="return-button">
-                Return to Dashboard
-            </button>
+            <h1 className="logo">Uplift</h1>
             <h1>{isEditing ? 'Edit Profile' : 'My Profile'}</h1>
             {isEditing ? (
                 <div className="edit-form">
@@ -207,6 +200,9 @@ function Profile() {
                         <button onClick={handleUpdate}>Update</button>
                         <button onClick={handleEditToggle}>Cancel</button>
                     </div>
+                    <button onClick={() => navigate('/dashboard')} className="return-button">
+                        Return to Dashboard
+                    </button>
                 </div>
             ) : (
                 <div className="profile-info">
@@ -217,7 +213,38 @@ function Profile() {
                     <p><strong>Email:</strong> {user.email}</p>
                     <div className="button-group">
                         <button onClick={handleEditToggle}>Edit Profile</button>
-                        <button className="delete-button" onClick={handleDelete}>Delete Account</button>
+                        <button
+                            className="delete-button"
+                            onClick={() => user.username && setShowDeleteModal(true)}
+                            disabled={!user.username}
+                        >
+                            Delete Account
+                        </button>
+                    </div>
+                    <button onClick={() => navigate('/dashboard')} className="return-button">
+                        Return to Dashboard
+                    </button>
+                </div>
+            )}
+            {showDeleteModal && (
+                <div className="profile-modal-overlay">
+                    <div className="profile-modal-content">
+                        <p>Are you sure you want to delete your account?</p>
+                        <button
+                            onClick={() => {
+                                setShowDeleteModal(false);
+                                handleDelete();
+                            }}
+                            className="confirm-delete-button"
+                        >
+                            Yes, delete
+                        </button>
+                        <button
+                            onClick={() => setShowDeleteModal(false)}
+                            className="cancel-delete-button"
+                        >
+                            Cancel
+                        </button>
                     </div>
                 </div>
             )}

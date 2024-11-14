@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './Login.css';
-import '../pages/PrivacyPolicy.css'; 
-import PrivacyPolicy from '../pages/PrivacyPolicy'; 
+import PrivacyPolicy from '../pages/PrivacyPolicy';
 
 function Login({ defaultRegisterState = false }) {
   // Toggle between login and register
@@ -20,24 +19,25 @@ function Login({ defaultRegisterState = false }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [error, setError] = useState(null); 
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
   // State for privacy policy popup
-  const [isPrivacyPolicyOpen, setPrivacyPolicyOpen] = useState(false); 
-  const [hasConsented, setHasConsented] = useState(false); 
+  const [isPrivacyPolicyOpen, setPrivacyPolicyOpen] = useState(false);
+  const [hasConsented, setHasConsented] = useState(false);
 
   // Function to toggle form mode
   const handleFormToggle = () => {
-    setIsRegistering(!isRegistering); 
-    setFirstName(''); 
+    setIsRegistering(!isRegistering);
+    setFirstName('');
     setLastName('');
     setBirthDate('');
     setUsername('');
     setPassword('');
     setEmail('');
     setError(null);
+    setHasConsented(false);
   };
 
   // Function to calculate age based on birthDate
@@ -92,7 +92,7 @@ function Login({ defaultRegisterState = false }) {
         localStorage.setItem('token', data.token);
         navigate('/dashboard');
       }
-        // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line no-unused-vars
     } catch (error) {
       setError('Server issue, try again later');
     }
@@ -123,7 +123,7 @@ function Login({ defaultRegisterState = false }) {
       } else {
         handleFormToggle();
       }
-        // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line no-unused-vars
     } catch (error) {
       setError('Something went wrong.');
     }
@@ -140,15 +140,9 @@ function Login({ defaultRegisterState = false }) {
   };
 
   return (
-
-    
-
     <div className="user-form-container">
-
       <div className="user-form">
-      <button onClick={() => navigate('/')} className="return-button">
-        Return to Home
-      </button>
+        <h1 className="logo">Uplift</h1>
         <h2>{isRegistering ? 'Register' : 'Login'}</h2>
 
         {error && <div className="error-message">{error}</div>}
@@ -166,7 +160,6 @@ function Login({ defaultRegisterState = false }) {
                     required
                   />
                 </div>
-
                 <div>
                   <label>Last name:</label>
                   <input
@@ -177,7 +170,6 @@ function Login({ defaultRegisterState = false }) {
                   />
                 </div>
               </div>
-
               <div className="form-row">
                 <div>
                   <label>Birth (yyyy-mm-dd):</label>
@@ -198,7 +190,6 @@ function Login({ defaultRegisterState = false }) {
                   />
                 </div>
               </div>
-
               <div>
                 <label>Email:</label>
                 <input
@@ -208,7 +199,6 @@ function Login({ defaultRegisterState = false }) {
                   required
                 />
               </div>
-
               <div>
                 <label>Password:</label>
                 <input
@@ -227,9 +217,9 @@ function Login({ defaultRegisterState = false }) {
                 />
                 <span
                   onClick={togglePrivacyPolicy}
-                  style={{ color: 'blue', cursor: 'pointer', textDecoration: 'underline' }}
+
                 >
-                  Personally Identifiable Information (PII)
+                  Personally Identifiable Information
                 </span>
               </label>
             </>
@@ -261,12 +251,14 @@ function Login({ defaultRegisterState = false }) {
         </form>
 
         <button onClick={handleFormToggle}>
-          {isRegistering ? 'Already registered' : 'Register'}
+          {isRegistering ? 'Login' : 'Register'}
         </button>
-
+        <button onClick={() => navigate('/')} className="return-button">
+          Return
+        </button>
         {isPrivacyPolicyOpen && (
-          <div className="modal-overlay">
-            <div className="modal-content">
+          <div className="privacy-modal-overlay">
+            <div className="privacy-modal-content">
               <button onClick={togglePrivacyPolicy} className="close-button">✕</button>
               <div className="policy-content">
                 <PrivacyPolicy />
@@ -274,6 +266,7 @@ function Login({ defaultRegisterState = false }) {
               <label>
                 <input
                   type="checkbox"
+                  className="custom-checkbox"
                   checked={hasConsented}
                   onChange={(e) => handleConsentChange(e.target.checked)}
                 />
