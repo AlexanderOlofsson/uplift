@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import image1 from '../assets/images/image1.jpg';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
 
 function MentalPage() {
   const navigate = useNavigate();
@@ -88,12 +89,7 @@ function MentalPage() {
         </motion.div>
       </main>
 
-      <footer>
-        <motion.h2 className="logo" variants={logoEffect}>
-          Uplift
-        </motion.h2>
-        <motion.p variants={textHoverEffect}>&copy; 2024 Uplift. All rights reserved.</motion.p>
-      </footer>
+      <Footer />
     </motion.div>
   );
 }

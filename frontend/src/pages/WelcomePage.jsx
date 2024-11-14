@@ -6,10 +6,16 @@ import { useNavigate } from 'react-router-dom';
 // import image3 from '../assets/images/image3.jpg';
 import './WelcomePage.css';
 import TodaysTasks from '../components/TodaysTasks';
+<<<<<<< HEAD
 import Chart from '../components/Chart'
 import HotStreak from '../components/HotStreak';
 import Quote from '../components/Quote';
 // import Mentor from '../components/Mentor';
+=======
+import Mentor from '../components/Mentor';
+import Footer from '../components/Footer';
+
+>>>>>>> 9555574882bebaa90c07e3610843133b7edbef04
 
 function WelcomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -108,12 +114,7 @@ function WelcomePage() {
     </div>
       </main>
 
-      <footer>
-        <motion.h2 className="logo" variants={textAppear}>
-          Uplift
-        </motion.h2>
-        <p>&copy; 2024 Uplift. All rights reserved.</p>
-      </footer>
+      <Footer />
     </motion.div>
   );
 }

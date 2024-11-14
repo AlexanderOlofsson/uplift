@@ -80,6 +80,8 @@ const Mentor = () => {
         <p>No pending activities for approval.</p>
       )}
     </div>
+    
+
   );
 };
 
