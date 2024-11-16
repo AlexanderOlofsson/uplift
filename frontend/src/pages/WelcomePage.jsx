@@ -1,21 +1,18 @@
-import { useState } from 'react';
+import { useState, Suspense, lazy } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-// import image1 from '../assets/images/image1.jpg';
-// import image2 from '../assets/images/image2.jpg';
-// import image3 from '../assets/images/image3.jpg';
 import './WelcomePage.css';
-import TodaysTasks from '../components/TodaysTasks';
-import Chart from '../components/Chart'
-import HotStreak from '../components/HotStreak';
-import Quote from '../components/Quote';
-// import Mentor from '../components/Mentor';
-import Footer from '../components/Footer';
 
+// Lazy-load komponenter för att minska initiala laddningstiden
+const TodaysTasks = lazy(() => import('../components/TodaysTasks'));
+const Chart = lazy(() => import('../components/Chart'));
+const HotStreak = lazy(() => import('../components/HotStreak'));
+const Quote = lazy(() => import('../components/Quote'));
+const Footer = lazy(() => import('../components/Footer'));
 
 function WelcomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [updateTrigger, setUpdateTrigger] = useState(0); // För trigger
+  const [updateTrigger, setUpdateTrigger] = useState(0);
 
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
@@ -71,41 +68,35 @@ function WelcomePage() {
         </nav>
       </header>
 
-
-          {/* <motion.div
-            className="text-content"
-            variants={textAppear}
-            initial="hidden"
-            animate="visible"
-          >
-            <p>
-              <strong>Welcome!</strong>
-              <br />
-              Here are your daily tasks designed to uplift your physical health, strengthen your social bonds, and fuel your personal growth. Every day is an opportunity to become a better you.
-            </p>
-          </motion.div> */}
-    <div className="allContentContainer">
-      <div className="dailyQuoteContainer">
-        <Quote />
-      </div>
-      <div className="trinity-container">
-        <div className="hotStreakContainer">
-          <HotStreak token={token} triggerUpdate={updateTrigger}/>
-        </div>
-        <div className="dailyActivityContainer">
-          <TodaysTasks token={token} onTaskComplete={handleTaskComplete} />
-        </div>
-        <div className="chartContainer">
-          <Chart token={token} triggerUpdate={updateTrigger} />
+      <div className="allContentContainer">
+      
+        <Suspense fallback={<div>Loading...</div>}>
+          <div className="dailyQuoteContainer">
+            <Quote />
+          </div>
+        </Suspense>
+        <div className="trinity-container">
+          <Suspense fallback={<div>Loading...</div>}>
+            <div className="hotStreakContainer">
+              <HotStreak token={token} triggerUpdate={updateTrigger} />
+            </div>
+          </Suspense>
+          <Suspense fallback={<div>Loading...</div>}>
+            <div className="dailyActivityContainer">
+              <TodaysTasks token={token} onTaskComplete={handleTaskComplete} />
+            </div>
+          </Suspense>
+          <Suspense fallback={<div>Loading...</div>}>
+            <div className="chartContainer">
+              <Chart token={token} triggerUpdate={updateTrigger} />
+            </div>
+          </Suspense>
         </div>
       </div>
 
-
-
-
-
-      </div>
-      <Footer />
+      <Suspense fallback={<div>Loading footer...</div>}>
+        <Footer />
+      </Suspense>
     </motion.div>
   );
 }

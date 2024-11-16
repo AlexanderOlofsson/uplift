@@ -10,6 +10,7 @@ import LoginPage from '../pages/LoginPage';
 import Mentor from '../components/Mentor';
 import ReviewMarque from '../components/ReviewMarquee';
 import TodaysTasks from '../components/TodaysTasks';
+import About from '../pages/About'
 
 function AppRoutes() {
 
@@ -26,6 +27,7 @@ function AppRoutes() {
       <Route path="/mentor" element={<Mentor />} />
       <Route path="/review-marque" element={<ReviewMarque />} />
       <Route path="/todays-tasks" element={<TodaysTasks />} />
+      <Route path="/About" element={<About />} />
     </Routes>
   );
 }

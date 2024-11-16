@@ -4,13 +4,22 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: "Humane";
+    src: url('../fonts/Humane-Regular.woff2') format('woff2'),
+         url('../fonts/Humane-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 .footer-container {
   background-color: #f7f7f7;
   color: #333;
   text-align: center;
   padding: 1rem;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+  
   width: 100%;
 }
 
@@ -27,6 +36,8 @@
     color: #3367a1;
     text-transform: uppercase;
     margin-bottom: 1rem;
+    font-family: "Humane";
+    font-size: 3rem;
 }
 
 .footer-links {
