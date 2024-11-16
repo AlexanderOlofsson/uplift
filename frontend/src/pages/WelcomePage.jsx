@@ -25,7 +25,6 @@ function WelcomePage() {
   };
 
   const handleTaskComplete = () => {
-    // Ökar trigger varje gång en uppgift slutförs
     setUpdateTrigger((prev) => prev + 1);
   };
 

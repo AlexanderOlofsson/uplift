@@ -88,6 +88,45 @@ const resetCompletedTasks = async () => {
   }
 };
 
+const resetStreakIfNoTaskCompleted = async () => {
+  try {
+    const today = new Date().toISOString().split('T')[0];
+
+    const usersResult = await db.query('SELECT user_id FROM statistics');
+    const users = usersResult.rows;
+
+    for (const user of users) {
+      // check if user did complete anything today
+      const completedTasksResult = await db.query(
+        `
+        SELECT COUNT(*) AS completed_count
+        FROM dailyactivities
+        WHERE user_id = $1 AND completed_date = $2
+        `,
+        [user.user_id, today]
+      );
+
+      const completedCount = parseInt(completedTasksResult.rows[0].completed_count, 10);
+
+      if (completedCount === 0) {
+        // reset streak
+        await db.query(
+          `
+          UPDATE statistics
+          SET streak_days = 0, updated_at = NOW()
+          WHERE user_id = $1
+          `,
+          [user.user_id]
+        );
+        console.log(`Streak reset to 0 for user ${user.user_id}`);
+      }
+    }
+  } catch (error) {
+    console.error('Could not reset streak:', error);
+  }
+};
+
+
 
 // Function runs every midnight (CEST) for assigning activities, resetting tasks, and updating streaks
 cron.schedule(
@@ -96,6 +135,7 @@ cron.schedule(
     console.log('Running midnight tasks...');
     await assignDailyActivities();
     await resetCompletedTasks();
+    await resetStreakIfNoTaskCompleted();
   },
   {
     timezone: 'Europe/Stockholm',

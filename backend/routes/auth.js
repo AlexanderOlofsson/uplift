@@ -53,6 +53,13 @@ router.post('/register', async (req, res) => {
   const { firstName, lastName, birthDate, username, email, password } = req.body;
 
   try {
+
+      // Check if username exists already buddy
+      const usernameCheck = await dbFountain.query('SELECT username FROM users WHERE username = $1', [username]);
+        if (usernameCheck.rows.length > 0) {
+          return res.status(400).json({ message: 'Username already exists. Please choose another.' });
+          }
+
       // Hash the password
       const hashedPassword = await bcrypt.hash(password, 10);
 

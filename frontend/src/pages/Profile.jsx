@@ -84,7 +84,6 @@ function Profile() {
                 body: JSON.stringify({
                     firstName: newFirstName,
                     lastName: newLastName,
-                    birthDate: newBirthDate,
                     username: newUsername,
                     email: newEmail,
                     password: newPassword
@@ -97,7 +96,7 @@ function Profile() {
                 setUser({
                     firstName: updatedUser.first_name,
                     lastName: updatedUser.last_name,
-                    birthDate: data.birth_date,
+                    birthDate: updatedUser.birth_date,
                     username: updatedUser.username,
                     email: updatedUser.email
                 });

@@ -31,8 +31,8 @@ router.put('/complete-task', authenticateToken, async (req, res) => {
     // Mark the task as completed
     const updateTaskResult = await db.query(
       `
-      UPDATE DailyActivities
-      SET completed = TRUE
+      UPDATE dailyactivities
+      SET completed = TRUE, completed_date = CURRENT_DATE
       WHERE activity_id = $1 AND user_id = $2 AND date = CURRENT_DATE
       RETURNING *
       `,

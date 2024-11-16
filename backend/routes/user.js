@@ -56,26 +56,26 @@ router.get('/profile', authenticateToken, async (req, res) => {
 
 // UPDATE - Update the amazing users profile data
 router.put('/profile', authenticateToken, async (req, res) => {
-  const { firstName, lastName, birthDate, username, email, password } = req.body;
+  const { firstName, lastName, username, email, password } = req.body;
 
   try {
-    console.log('Incoming data:', { firstName, lastName, birthDate, username, email, password });
+    console.log('Incoming data:', { firstName, lastName, username, email, password });
 
     let query = `
       UPDATE users
-      SET first_name = $1, last_name = $2, birth_date = $3, username = $4, email = $5
+      SET first_name = $1, last_name = $2, username = $3, email = $4
     `;
 
-    const values = [firstName, lastName, birthDate, username, email];
+    const values = [firstName, lastName, username, email];
 
     if (password) {
       console.log('Hashing password...');
       const hashedPassword = await bcrypt.hash(password, 10);
-      query += `, password = $6`;
+      query += `, password = $5`;
       values.push(hashedPassword);
     }
 
-    query += ` WHERE uid = $${values.length + 1} RETURNING first_name, last_name, birth_date, username, email`;
+    query += ` WHERE uid = $${values.length + 1} RETURNING first_name, last_name, TO_CHAR(birth_date, 'YYYY-MM-DD') AS birth_date, username, email`;
 
     values.push(req.user.userId);
 
@@ -93,6 +93,8 @@ router.put('/profile', authenticateToken, async (req, res) => {
     res.status(500).json({ message: 'Something went wrong during update' });
   }
 });
+
+
 
 
 
