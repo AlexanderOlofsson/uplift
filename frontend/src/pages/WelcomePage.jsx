@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import './WelcomePage.css';
 
-// Lazy-load komponenter för att minska initiala laddningstiden
+// Lazy-load komponenter för att minska laddningstiden
 const TodaysTasks = lazy(() => import('../components/TodaysTasks'));
 const Chart = lazy(() => import('../components/Chart'));
 const HotStreak = lazy(() => import('../components/HotStreak'));
