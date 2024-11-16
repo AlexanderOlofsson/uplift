@@ -2,117 +2,69 @@
 
 -- Table users:
 
-CREATE TABLE IF NOT EXISTS public.users
-(
-    uid bigint NOT NULL DEFAULT nextval('users_uid_seq'::regclass),
-    username character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    password character varying(200) COLLATE pg_catalog."default" NOT NULL,
-    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
-    created timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    address character varying(100) COLLATE pg_catalog."default",
-    phone character varying(15) COLLATE pg_catalog."default",
-    birth_date date,
-    first_name character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    last_name character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT users_pkey PRIMARY KEY (uid)
-)
+-- Table: users
+CREATE TABLE IF NOT EXISTS public.users (
+    uid BIGINT NOT NULL DEFAULT nextval('users_uid_seq'::regclass),
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(200) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    birth_date DATE,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    CONSTRAINT users_pkey PRIMARY KEY (uid),
+    CONSTRAINT unique_username UNIQUE (username)
+);
 
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.users
-    OWNER to postgres;
-
--- Table activities
-
-CREATE TABLE IF NOT EXISTS public.activities
-(
-    id integer NOT NULL DEFAULT nextval('activities_id_seq'::regclass),
-    category character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    activity_number integer NOT NULL,
-    description text COLLATE pg_catalog."default" NOT NULL,
+-- Table: activities
+CREATE TABLE IF NOT EXISTS public.activities (
+    id BIGINT NOT NULL DEFAULT nextval('activities_id_seq'::regclass),
+    category VARCHAR(50) NOT NULL,
+    activity_number INTEGER NOT NULL,
+    description TEXT NOT NULL,
     CONSTRAINT activities_pkey PRIMARY KEY (id)
-)
+);
 
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.activities
-    OWNER to postgres;
-
--- Table dailyactivites
-
-CREATE TABLE IF NOT EXISTS public.dailyactivities
-(
-    id integer NOT NULL DEFAULT nextval('dailyactivities_id_seq'::regclass),
-    user_id integer,
-    activity_id integer,
-    date date DEFAULT CURRENT_DATE,
-    category character varying(50) COLLATE pg_catalog."default",
-    completed boolean DEFAULT false,
+-- Table: dailyactivities
+CREATE TABLE IF NOT EXISTS public.dailyactivities (
+    id BIGINT NOT NULL DEFAULT nextval('dailyactivities_id_seq'::regclass),
+    user_id BIGINT NOT NULL,
+    activity_id BIGINT NOT NULL,
+    date DATE DEFAULT CURRENT_DATE,
+    category VARCHAR(50),
+    completed BOOLEAN DEFAULT FALSE,
+    completed_date DATE,
     CONSTRAINT dailyactivities_pkey PRIMARY KEY (id),
+    CONSTRAINT unique_user_activity UNIQUE (user_id, activity_id),
     CONSTRAINT unique_user_date_category UNIQUE (user_id, date, category),
-    CONSTRAINT dailyactivities_activity_id_fkey FOREIGN KEY (activity_id)
-        REFERENCES public.activities (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
-    CONSTRAINT dailyactivities_user_id_fkey FOREIGN KEY (user_id)
-        REFERENCES public.users (uid) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE CASCADE
-)
+    CONSTRAINT fk_activity FOREIGN KEY (activity_id) REFERENCES public.activities (id) ON UPDATE NO ACTION ON DELETE NO ACTION,
+    CONSTRAINT fk_user_activity FOREIGN KEY (user_id) REFERENCES public.users (uid) ON UPDATE NO ACTION ON DELETE CASCADE
+);
 
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.dailyactivities
-    OWNER to postgres;
-
--- Mentors
-CREATE TABLE IF NOT EXISTS public.mentors
-(
-    id SERIAL PRIMARY KEY,
-    mentor_id BIGINT REFERENCES public.users(uid) ON DELETE CASCADE,
-    user_id BIGINT REFERENCES public.users(uid) ON DELETE CASCADE,
-    created_at TIMESTAMP DEFAULT NOW(),
-    CONSTRAINT unique_mentor_user UNIQUE (mentor_id, user_id)
-)
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.mentors
-    OWNER TO postgres;
-
-
--- Table statistics
-
-CREATE TABLE IF NOT EXISTS public.statistics
-(
-    id integer NOT NULL DEFAULT nextval('statistics_id_seq'::regclass),
-    user_id integer,
-    total_tasks_completed integer DEFAULT 0,
-    mental_tasks_completed integer DEFAULT 0,
-    physical_tasks_completed integer DEFAULT 0,
-    social_tasks_completed integer DEFAULT 0,
-    streak_days integer DEFAULT 0,
-    updated_at timestamp without time zone DEFAULT now(),
+-- Table: statistics
+CREATE TABLE IF NOT EXISTS public.statistics (
+    id BIGINT NOT NULL DEFAULT nextval('statistics_id_seq'::regclass),
+    user_id BIGINT NOT NULL,
+    total_tasks_completed INTEGER DEFAULT 0,
+    mental_tasks_completed INTEGER DEFAULT 0,
+    physical_tasks_completed INTEGER DEFAULT 0,
+    social_tasks_completed INTEGER DEFAULT 0,
+    streak_days INTEGER DEFAULT 0,
+    updated_at TIMESTAMP DEFAULT NOW(),
     CONSTRAINT statistics_pkey PRIMARY KEY (id),
-    CONSTRAINT statistics_user_id_fkey FOREIGN KEY (user_id)
-        REFERENCES public.users (uid) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE CASCADE
-)
+    CONSTRAINT fk_statistics_user FOREIGN KEY (user_id) REFERENCES public.users (uid) ON UPDATE NO ACTION ON DELETE CASCADE
+);
 
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.statistics
-    OWNER to postgres;
-
--- Table quotes
-
-    CREATE TABLE IF NOT EXISTS quotes (
-    id SERIAL PRIMARY KEY,
+-- Table: quotes
+CREATE TABLE IF NOT EXISTS public.quotes (
+    id INTEGER NOT NULL DEFAULT nextval('quotes_id_seq'::regclass),
     quote TEXT NOT NULL,
     author VARCHAR(100),
-    created_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMP DEFAULT NOW(),
+    CONSTRAINT quotes_pkey PRIMARY KEY (id)
 );
+
 
 
 IINSERT INTO Activities (category, activity_number, description) VALUES
