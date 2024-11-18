@@ -1,6 +1,13 @@
 -- pgAdmin
 
--- Table users:
+-- Sequences
+
+CREATE SEQUENCE IF NOT EXISTS activities_id_seq;
+CREATE SEQUENCE IF NOT EXISTS activities_id_seq;
+CREATE SEQUENCE IF NOT EXISTS dailyactivities_id_seq;
+CREATE SEQUENCE IF NOT EXISTS quotes_id_seq;
+CREATE SEQUENCE IF NOT EXISTS statistics_id_seq;
+CREATE SEQUENCE IF NOT EXISTS users_uid_seq;
 
 -- Table: users
 CREATE TABLE IF NOT EXISTS public.users (
@@ -67,7 +74,7 @@ CREATE TABLE IF NOT EXISTS public.quotes (
 
 
 
-IINSERT INTO Activities (category, activity_number, description) VALUES
+INSERT INTO Activities (category, activity_number, description) VALUES
 ('Physical', 1, 'Take a 10-minute walk outside'),
 ('Physical', 2, 'Do 5 minutes of stretching in the morning'),
 ('Physical', 3, 'Drink 8 glasses of water throughout the day'),

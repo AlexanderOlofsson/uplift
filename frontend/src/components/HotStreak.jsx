@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import './Hotstreak.css';
-import Lottie from 'lottie-react';
-import hotStreakAnimation from '../assets/lottieFiles/hotStreakAnimation.json';
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import "./Hotstreak.css";
+import Lottie from "lottie-react";
+import hotStreakAnimation from "../assets/lottiefiles/hotstreakAnimation.json";
 
 function HotStreak({ token, triggerUpdate }) {
   const [streak, setStreak] = useState(0);
-  const BASE_URL = import.meta.env.VITE_BASE_URL
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   const fetchStreak = async () => {
     try {
@@ -17,13 +17,13 @@ function HotStreak({ token, triggerUpdate }) {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to check the hot hot hot streak.');
+        throw new Error("Failed to check the hot hot hot streak.");
       }
 
       const data = await response.json();
       setStreak(data.streak_days);
     } catch (err) {
-      console.error('Something went wrong while fetching streak:', err);
+      console.error("Something went wrong while fetching streak:", err);
     }
   };
 
@@ -32,7 +32,8 @@ function HotStreak({ token, triggerUpdate }) {
     fetchStreak();
   }, [token, triggerUpdate]);
 
-  const streakContainerClass = streak === 0 ? 'streakNumberContainer0' : 'streakNumberContainer';
+  const streakContainerClass =
+    streak === 0 ? "streakNumberContainer0" : "streakNumberContainer";
 
   return (
     <div className="hotStreakContainer2">
@@ -40,7 +41,7 @@ function HotStreak({ token, triggerUpdate }) {
       <div className="hotStreakAnimation">
         <Lottie
           animationData={hotStreakAnimation}
-          style={{ height: '300px', width: '300px' }}
+          style={{ height: "300px", width: "300px" }}
           autoplay
           loop={true}
         />
