@@ -20,9 +20,9 @@ function Login({ defaultRegisterState = false }) {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [error, setError] = useState(null);
-
+  const BASE_URL = import.meta.env.VITE_BASE_URL
   const navigate = useNavigate();
-
+  console.log(BASE_URL)
   // State for privacy policy popup
   const [isPrivacyPolicyOpen, setPrivacyPolicyOpen] = useState(false);
   const [hasConsented, setHasConsented] = useState(false);
@@ -76,7 +76,7 @@ function Login({ defaultRegisterState = false }) {
   // Login function
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:3000/auth/login', {
+      const response = await fetch(`${BASE_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ function Login({ defaultRegisterState = false }) {
   // Register function
   const handleRegister = async () => {
     try {
-      const response = await fetch('http://localhost:3000/auth/register', {
+      const response = await fetch(`${BASE_URL}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -270,7 +270,7 @@ function Login({ defaultRegisterState = false }) {
                 <PrivacyPolicy />
               </div>
               <label className="custom-checkbox-container">
-              I have read and accept Uplift's privacy policy.
+              I have read and accept Uplifts privacy policy.
                 <input
                   type="checkbox"
                   className="custom-checkbox"

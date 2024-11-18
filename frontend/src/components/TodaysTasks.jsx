@@ -5,11 +5,12 @@ import './TodayTasks.css'
 
 function TodaysTasks({ token = '', onTaskComplete = () => {} }) {
   const [tasks, setTasks] = useState({ Physical: null, Mental: null, Social: null });
+  const BASE_URL = import.meta.env.VITE_BASE_URL
 
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/activities/daily-activities', {
+        const response = await fetch(`${BASE_URL}/api/activities/daily-activities`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -31,7 +32,7 @@ function TodaysTasks({ token = '', onTaskComplete = () => {} }) {
 
   const handleCompleteTask = async (activityId, category) => {
     try {
-      const response = await fetch('http://localhost:3000/statistics/complete-task', {
+      const response = await fetch(`${BASE_URL}/statistics/complete-task`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

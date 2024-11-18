@@ -9,11 +9,12 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 function Chart({ token, triggerUpdate }) {
   const [statistics, setStatistics] = useState(null);
   const [error, setError] = useState(null);
+  const BASE_URL = import.meta.env.VITE_BASE_URL
 
   // Fetch stats data
   const fetchStatistics = async () => {
     try {
-      const response = await fetch("http://localhost:3000/statistics", {
+      const response = await fetch(`${BASE_URL}/statistics`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

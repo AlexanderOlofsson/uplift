@@ -19,6 +19,8 @@ function Profile() {
     const [newPassword, setNewPassword] = useState('');
     const [showDeleteModal, setShowDeleteModal] = useState(false); // State for showing/hiding delete modal
     const navigate = useNavigate();
+    const BASE_URL = import.meta.env.VITE_BASE_URL
+
 
     // Fetch user data when all loaded, get and check token
     useEffect(() => {
@@ -26,7 +28,7 @@ function Profile() {
             const token = localStorage.getItem('token'); // Get token from localStorage
             if (!token) return; // IF NO TOKEN STOP HERE
             try {
-                const response = await fetch('http://localhost:3000/users/profile', {
+                const response = await fetch(`${BASE_URL}/users/profile`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -75,7 +77,7 @@ function Profile() {
     const handleUpdate = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch('http://localhost:3000/users/profile', {
+            const response = await fetch(`${BASE_URL}/users/profile`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -112,7 +114,7 @@ function Profile() {
     const handleDelete = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch('http://localhost:3000/users/profile', {
+            const response = await fetch(`${BASE_URL}/users/profile`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,

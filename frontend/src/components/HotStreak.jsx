@@ -6,10 +6,11 @@ import hotStreakAnimation from '../assets/lottieFiles/hotStreakAnimation.json';
 
 function HotStreak({ token, triggerUpdate }) {
   const [streak, setStreak] = useState(0);
+  const BASE_URL = import.meta.env.VITE_BASE_URL
 
   const fetchStreak = async () => {
     try {
-      const response = await fetch('http://localhost:3000/statistics/streak', {
+      const response = await fetch(`${BASE_URL}/statistics/streak`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

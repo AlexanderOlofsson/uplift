@@ -3,11 +3,12 @@ import './Quote.css';
 
 function Quote() {
   const [quote, setQuote] = useState(null);
+  const BASE_URL = import.meta.env.VITE_BASE_URL
 
   useEffect(() => {
     const fetchQuote = async () => {
       try {
-        const response = await fetch('http://localhost:3000/quotes/daily-quote');
+        const response = await fetch(`${BASE_URL}/quotes/daily-quote`);
         if (!response.ok) {
           throw new Error('Failed to fetch the quote of the day.');
         }

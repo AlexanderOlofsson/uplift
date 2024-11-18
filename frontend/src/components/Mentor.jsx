@@ -5,17 +5,18 @@ const Mentor = () => {
   const [activities, setActivities] = useState([]);
   const [error, setError] = useState(null);
   const [approvalMessage, setApprovalMessage] = useState(null);
-  const mentorId = localStorage.getItem('mentorId'); 
+  const mentorId = localStorage.getItem('mentorId');
+  const BASE_URL = import.meta.env.VITE_BASE_URL
 
   useEffect(() => {
     const fetchPendingActivities = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/mentors/activities/${mentorId}`);
+        const response = await fetch(`${BASE_URL}/mentors/activities/${mentorId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch activities');
         }
         const data = await response.json();
-        setActivities(data.message ? [] : data); 
+        setActivities(data.message ? [] : data);
       } catch (error) {
         setError(error.message);
       }
@@ -26,7 +27,7 @@ const Mentor = () => {
 
   const handleApprove = async (activityId) => {
     try {
-      const response = await fetch(`http://localhost:3000/mentors/approve`, {
+      const response = await fetch(`${BASE_URL}/mentors/approve`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ dailyActivityId: activityId, mentorId }),
@@ -43,7 +44,7 @@ const Mentor = () => {
 
   const handleReject = async (activityId) => {
     try {
-      const response = await fetch(`http://localhost:3000/mentors/reject`, {
+      const response = await fetch(`${BASE_URL}/mentors/reject`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ dailyActivityId: activityId, mentorId }),
@@ -80,7 +81,7 @@ const Mentor = () => {
         <p>No pending activities for approval.</p>
       )}
     </div>
-    
+
 
   );
 };
